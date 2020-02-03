@@ -13,7 +13,7 @@ toggleCollapse = () => {
 render() {
   return (
       <MDBNavbar color="default-color" dark expand="md" className='px-5'>
-        <MDBNavbarBrand style={{cursor:'pointer'}}>
+        <MDBNavbarBrand href='/' style={{cursor:'pointer'}}>
           <strong className="white-text">Navbar</strong>
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={this.toggleCollapse} />
