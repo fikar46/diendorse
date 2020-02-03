@@ -1,6 +1,16 @@
 import React, { Component } from 'react'
-import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
+import {getHeaderAuth} from '../../helper/service'
+import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
+import Axios from 'axios';
+import {koneksi} from '../../environment'
 export default class RoleValdiation extends Component {
+  componentDidMount(){
+   Axios.get(`${koneksi}/auth/testjwt`,getHeaderAuth())
+   .then((res)=>{
+     console.log(res.data)
+   })
+  
+  }
     render() {
         return (
             <div className='container'>

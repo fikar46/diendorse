@@ -35,12 +35,12 @@ class SignUp extends Component {
                         Axios.post(`${koneksi}/auth/register`,{
                             fullname, email, password,role:"user"
                         }).then((res)=>{
-                            console.log(res.data)
                             localStorage.setItem('user', JSON.stringify(res.data));
 
                             this.setState({
                                 error:false
                                         })
+                            window.location="/role"
                         }).catch((err)=>{
                             console.log(err)
                         })
