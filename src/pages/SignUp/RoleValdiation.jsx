@@ -6,7 +6,7 @@ export default class RoleValdiation extends Component {
             <div className='container'>
             <div className='row justify-content-center pt-5 mt-5'>
                 <MDBCard className='col-md-4'>
-            <MDBCardBody>
+              <MDBCardBody>
               <form>
                 <p className="h4 text-center">Select account type</p>
                 <p className="text-center">Don’t worry, this can be changed later.</p>
