@@ -1,51 +1,130 @@
 import React, { Component } from 'react';
 import {MDBInput,MDBBtn,MDBCard,MDBCardBody} from 'mdbreact'
-
+import Axios from "axios";
+import {koneksi} from "../../environment"
 class SignUp extends Component {
+    state={
+        fullname:"",
+        email:"",
+        password:"",
+        confirm:"",
+        error:false,
+        errorMsg:""
+    }
+    changeHandler = event => {
+        this.setState({ [event.target.name]: event.target.value });
+      };
+    submitHandler = event => {
+        event.preventDefault();
+        event.target.className += " was-validated";
+        var {fullname,email,password,confirm,fullnameError,emailError,passwordError} = this.state;
+        const regexEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+           if(fullname != "" && email !="" && password != "" && confirm !=  ""){
+                if(!email.match(regexEmail)){
+                    this.setState({
+                        error:true,
+                        errorMsg:"Format Email Harus Benar"
+                                })
+                }else{
+                    if(password!= confirm){
+                        this.setState({
+                            error:true,
+                            errorMsg:"Password tidak sama"
+                                    })
+                    }else{
+                        Axios.post(`${koneksi}/auth/register`,{
+                            fullname, email, password,role:"user"
+                        }).then((res)=>{
+                            console.log(res.data)
+                            this.setState({
+                                error:false
+                                        })
+                        }).catch((err)=>{
+                            console.log(err)
+                        })
+                    }
+                }
+           }else{
+            this.setState({
+                error:true,
+                errorMsg:"Form wajib diisi"
+                        })
+           }
+    
+      };
+      errorForm=()=>{
+          if(this.state.error){
+              return(
+              <p className="text-danger">{this.state.errorMsg}</p>
+              )
+          }
+      }
     render() {
         return (
             <div className='container'>
                 <div className='row justify-content-center py-5'>
                     <MDBCard className='col-md-4'>
                         <MDBCardBody>
-                            <form>
-                                <p className="h5 text-center mb-4">Sign up</p>
+                            <form
+                             onSubmit={this.submitHandler}
+                             noValidate>
+                                <p className="h5 text-center mb-4 font-weight-bold">Sign up</p>
                                 <div className="grey-text">
                                 <MDBInput
+                                    value={this.state.fullname}
+                                    className="form-control"
+                                    name="fullname"
                                     label="Your Full Name"
-                                    icon="user"
-                                    group
+                                    id="fullname"
                                     type="text"
-                                    validate
-                                    error="wrong"
-                                    success="right"
-                                />
+                                    required
+                                    onChange={this.changeHandler}
+                                    >
+                                       
+                                    </MDBInput>
+                                    
                                 <MDBInput
+                                    value={this.state.email}
+                                    className="form-control"
+                                    name="email"
                                     label="Your email"
-                                    icon="envelope"
-                                    group
+                                    id="email"
                                     type="email"
-                                    validate
-                                    error="wrong"
-                                    success="right"
-                                />
+                                    required
+                                    onChange={this.changeHandler}
+                                >
+                                  
+                                </MDBInput>
                                 <MDBInput
+                                    value={this.state.password}
+                                    className="form-control"
+                                    name="password"
                                     label="Your password"
-                                    icon="lock"
-                                    group
+                                    id="password"
                                     type="password"
-                                    validate
-                                />
+                                    autoComplete="password"
+                                    required
+                                    onChange={this.changeHandler}
+                                    >
+                                    
+                                 </MDBInput>
                                 <MDBInput
+                                    value={this.state.confirm}
+                                    className="form-control"
+                                    name="confirm"
                                     label="Confirm your password"
-                                    icon="exclamation-triangle"
-                                    group
+                                    id="new-password"
                                     type="password"
-                                    validate
-                                />
+                                    autoComplete="confirm-password"
+                                    required
+                                    onChange={this.changeHandler}
+                                >
+                                   
+                                </MDBInput>
                                 </div>
                                 <div className="text-center">
-                                <MDBBtn color="primary">Register</MDBBtn>
+                                    {this.errorForm()}
+                                <MDBBtn color="primary" type="submit">Register</MDBBtn>
                                 </div>
                             </form>
                         </MDBCardBody>
