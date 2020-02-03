@@ -3,7 +3,7 @@ import Navbar from './components/Navbar'
 import {Route,Switch} from 'react-router-dom'
 import Login from './pages/Login/Login'
 import SignUp from './pages/SignUp/SignUp'
-import ProductList from './pages/ProductList/ProductList'
+import Jobs from './pages/ProductList/Jobs'
 
 export default class App extends Component {
   render() {
@@ -13,7 +13,7 @@ export default class App extends Component {
         <Switch>
           <Route path='/login' component={Login} />
           <Route path='/signup' component={SignUp} />
-          <Route path='/product-list' component={ProductList} />
+          <Route path='/jobs' component={Jobs} />
         </Switch>
       </div>
     )

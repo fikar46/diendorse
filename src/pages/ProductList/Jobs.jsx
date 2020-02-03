@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
 import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardTitle, MDBCardText,MDBBtn} from 'mdbreact'
+import { LoremIpsum } from "lorem-ipsum";
+
+const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+      max: 8,
+      min: 4
+    },
+    wordsPerSentence: {
+      max: 16,
+      min: 4
+    }
+  });
 
 const DataForInfluencer = (title, datePosted,verified,description,categories,priceRange,minFollower,minEngagementRate,numOfBid) => {
     return{
@@ -9,9 +21,12 @@ const DataForInfluencer = (title, datePosted,verified,description,categories,pri
 
 
 const data_for_influencer = [
-    DataForInfluencer('Dicari Cowok Ganteng','3','1','Ini Adalah Deskripsi Untuk Tawaran ini dan dan dan dan dan dan dan dan dan','makanan','10.000 - 15. 000',null,null,0),
-    DataForInfluencer('Ngiklanin Product Chicken Panas','10','1','Ini Adalah Deskripsi Untuk Tawaran ini dan dan dan dan dan dan dan dan dan','makanan','15.000 - 25. 000',2000,1,0),
-    DataForInfluencer('Saya Butuh Cewek Berhijab Cantik','1','1','Ini Adalah Deskripsi Untuk Tawaran ini dan dan dan dan dan dan dan dan dan','fashion','10.000 - 15. 000',1500,0.8,0),
+    DataForInfluencer('Dicari Cowok Ganteng','3','1',lorem.generateSentences(3),'makanan','10.000 - 15. 000',null,null,0),
+    DataForInfluencer('Ngiklanin Product Chicken Panas','10','1',lorem.generateSentences(3),'makanan','15.000 - 25. 000',2000,1,0),
+    DataForInfluencer('Saya Butuh Cewek Berhijab Cantik','1','1',lorem.generateSentences(3),'fashion','10.000 - 15. 000',1500,0.8,0),
+    DataForInfluencer(lorem.generateWords(4),'1','1',lorem.generateSentences(3),'fashion','10.000 - 15. 000',1500,0.8,0),
+    DataForInfluencer(lorem.generateWords(3),'1','1',lorem.generateSentences(3),'fashion','10.000 - 15. 000',1500,0.8,0),
+    DataForInfluencer(lorem.generateWords(5),'1','1',lorem.generateSentences(3),'fashion','10.000 - 15. 000',1500,0.8,0),
 ]
 
 
