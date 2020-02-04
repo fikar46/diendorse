@@ -18,11 +18,11 @@ class EmailVerification extends Component {
             })
             setTimeout(() => {
                 if(this.props.user.role == 'business'){
-                    return window.location="/business"
+                    return window.location="/find-influencer"
                 }else if(this.props.user.role == 'influencer'){
-                    return window.location="/influencers";
+                    return window.location="/find-business";
                 }else if(this.props.user.role=='user'){
-                    return window.location="/influencers";
+                    return window.location="/role";
                 }else if(this.props.user.role == "admin"){
                     return window.location="/admin";
                 }else{

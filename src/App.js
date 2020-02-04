@@ -10,6 +10,7 @@ import LoadingPage from './components/LoadingPage'
 import { connect} from 'react-redux'
 import {onRegisterSuccess} from './redux/actions'
 import EmailVerification from './pages/SignUp/EmailVerification'
+import FindInfluencer from './pages/ProductList/FindInfluencer'
 
 
 class App extends Component {
@@ -44,7 +45,8 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/signup' component={SignUp} />
             <Route path='/role' component={RoleValdiation} />
-            <Route path='/influencers' component={Jobs} />
+            <Route path='/find-business' component={Jobs} />
+             <Route path='/find-influencer' component={FindInfluencer} />
             <Route path='/email-verification' component={EmailVerification} />
           </Switch>
         }

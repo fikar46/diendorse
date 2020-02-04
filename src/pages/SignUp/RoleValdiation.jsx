@@ -3,7 +3,8 @@ import {getHeaderAuth} from '../../helper/service'
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
 import Axios from 'axios';
 import {koneksi} from '../../environment'
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import { Redirect } from 'react-router-dom';
 class RoleValdiation extends Component {
   state={
     roleUpdate:false,
@@ -13,8 +14,11 @@ class RoleValdiation extends Component {
    
   }
   updateRole=(role)=>{
+    if(this.props.email != null){
+      var email = this.props.user.email;
+    }
     Axios.post(`${koneksi}/auth/updateroleuser`,{
-      email:this.props.user.email,role
+      email,role
     },getHeaderAuth())
     .then((res)=>{
       this.setState({
@@ -22,9 +26,9 @@ class RoleValdiation extends Component {
       })
       setTimeout(() => {
         if(role == 'business'){
-          return window.location="/business"
+          return window.location="/find-influencer"
         }else if(role == 'influencer'){
-            return window.location="/influencers";
+            return window.location="/find-business";
         }
       }, 2000);
     }).catch((err)=>{
@@ -61,17 +65,22 @@ class RoleValdiation extends Component {
     }
   }
     render() {
+      if(this.props.user != null){
         return (
-            <div className='container'>
-            <div className='row justify-content-center pt-5 mt-5'>
-                <MDBCard className='col-md-4'>
-              <MDBCardBody>
-                 {this.bodyPageValidation()}
-            </MDBCardBody>
-          </MDBCard>
-          </div>
-          </div>
-        )
+          <div className='container'>
+          <div className='row justify-content-center pt-5 mt-5'>
+              <MDBCard className='col-md-4'>
+            <MDBCardBody>
+               {this.bodyPageValidation()}
+          </MDBCardBody>
+        </MDBCard>
+        </div>
+        </div>
+      )
+      }else{
+        return <Redirect to="/login"/>
+      }
+      
     }
 }
 const mapStateToProps = (state) => {
