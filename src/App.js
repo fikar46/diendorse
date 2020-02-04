@@ -9,6 +9,7 @@ import { localStorageKey } from './helper/constant'
 import LoadingPage from './components/LoadingPage'
 import { connect} from 'react-redux'
 import {onRegisterSuccess} from './redux/actions'
+import EmailVerification from './pages/SignUp/EmailVerification'
 
 
 class App extends Component {
@@ -44,6 +45,7 @@ class App extends Component {
             <Route path='/signup' component={SignUp} />
             <Route path='/role' component={RoleValdiation} />
             <Route path='/jobs' component={Jobs} />
+            <Route path='/email-verification' component={EmailVerification} />
           </Switch>
         }
       </div>

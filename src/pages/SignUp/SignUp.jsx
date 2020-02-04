@@ -16,7 +16,7 @@ class SignUp extends Component {
         this.setState({ [event.target.name]: event.target.value });
       };
     submitHandler = event => {
-        this.setState({loading : true})
+        this.setState({loading : true, errorMsg:"",error:false})
         event.preventDefault();
         event.target.className += " was-validated";
         var {fullname,email,password,confirm,fullnameError,emailError,passwordError} = this.state;
@@ -47,7 +47,12 @@ class SignUp extends Component {
                                         })
                             window.location="/role"
                         }).catch((err)=>{
-                            console.log(err)
+                            console.log(err.response)
+                            this.setState({
+                                errorMsg:err.response.data.message,
+                                error:true,
+                                loading:false
+                            })
                         })
                     }
                 }
