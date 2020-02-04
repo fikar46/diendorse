@@ -1,11 +1,11 @@
-import {jwt} from './constant'
+import {localStorageKey} from './constant'
 let token;
+
 export const getToken =()=>{
   if(token){
         return token
   }else{
-        token = jwt
-        return token
+        localStorage.getItem(localStorageKey)
   }
 }
 export const getHeaderAuth =()=>{

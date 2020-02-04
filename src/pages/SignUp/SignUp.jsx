@@ -9,12 +9,14 @@ class SignUp extends Component {
         password:"",
         confirm:"",
         error:false,
-        errorMsg:""
+        errorMsg:"",
+        loading : false
     }
     changeHandler = event => {
         this.setState({ [event.target.name]: event.target.value });
       };
     submitHandler = event => {
+        this.setState({loading : true})
         event.preventDefault();
         event.target.className += " was-validated";
         var {fullname,email,password,confirm,fullnameError,emailError,passwordError} = this.state;
@@ -22,12 +24,14 @@ class SignUp extends Component {
            if(fullname != "" && email !="" && password != "" && confirm !=  ""){
                 if(!email.match(regexEmail)){
                     this.setState({
+                        loading : false,
                         error:true,
                         errorMsg:"Format Email Harus Benar"
                                 })
                 }else{
                     if(password!= confirm){
                         this.setState({
+                            loading : false,
                             error:true,
                             errorMsg:"Password tidak sama"
                                     })
@@ -38,6 +42,7 @@ class SignUp extends Component {
                             localStorage.setItem('user', JSON.stringify(res.data));
 
                             this.setState({
+                                loading: false,
                                 error:false
                                         })
                             window.location="/role"
@@ -48,6 +53,7 @@ class SignUp extends Component {
                 }
            }else{
             this.setState({
+                loading:false,
                 error:true,
                 errorMsg:"Form wajib diisi"
                         })
@@ -126,8 +132,18 @@ class SignUp extends Component {
                                 </div>
                                 <div className="text-center">
                                     {this.errorForm()}
-                                <MDBBtn color="primary" type="submit">Register</MDBBtn>
+                                <MDBBtn color="primary" type="submit">
+                                {
+                                    this.state.loading ? 
+                                        <div  style={{color:"white"}} className="spinner-border mx-4" role="status">
+                                            <span className="sr-only"></span>
+                                        </div>
+                                        :
+                                        "Register"
+                                }
+                                </MDBBtn>
                                 </div>
+                                
                             </form>
                         </MDBCardBody>
                     </MDBCard>
