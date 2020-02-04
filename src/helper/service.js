@@ -5,7 +5,8 @@ export const getToken =()=>{
   if(token){
         return token
   }else{
-        localStorage.getItem(localStorageKey)
+        var auth = JSON.parse(localStorage.getItem(localStorageKey));
+        return token = auth.token
   }
 }
 export const getHeaderAuth =()=>{
