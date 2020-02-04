@@ -44,7 +44,7 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/signup' component={SignUp} />
             <Route path='/role' component={RoleValdiation} />
-            <Route path='/jobs' component={Jobs} />
+            <Route path='/influencers' component={Jobs} />
             <Route path='/email-verification' component={EmailVerification} />
           </Switch>
         }
