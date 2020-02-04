@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
 import {connect} from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import Axios from 'axios';
 import {koneksi} from '../../environment'
+import queryString from 'query-string'
 class EmailVerification extends Component {
     state={
         loading:false
     }
     componentDidMount(){
+        var params = queryString.parse(this.props.location.search)
+        var email = params.email;
         Axios.post(`${koneksi}/auth/email-verification`,{
-            email:"fikar@siapptn.com"
+            email:email
           }).then((res)=>{
             this.setState({loading:true
             })
@@ -33,13 +35,15 @@ class EmailVerification extends Component {
             })
           })
     }
-    pageLoad=()=>{        
+    pageLoad=()=>{
+        var params = queryString.parse(this.props.location.search)
+        var fullname = params.fullname;        
         if(this.state.loading){
             return(
                 <div className="text-center">
-                                    <h3>Selamat email kamu telah terverifikasi</h3>
-                                    <p>Kamu akan ter-redirect kehalaman utama</p>
-                                </div>
+                        <h3>Selamat {fullname} email kamu telah terverifikasi</h3>
+                        <p>Kamu akan ter-redirect kehalaman utama</p>
+                </div>
 
             )
         }else{

@@ -3,7 +3,8 @@ import {getHeaderAuth} from '../../helper/service'
 import { MDBBtn, MDBCard, MDBCardBody, MDBIcon } from 'mdbreact';
 import Axios from 'axios';
 import {koneksi} from '../../environment'
-export default class RoleValdiation extends Component {
+import {connect} from 'react-redux'
+class RoleValdiation extends Component {
   state={
     roleUpdate:false,
     role:null
@@ -13,14 +14,18 @@ export default class RoleValdiation extends Component {
   }
   updateRole=(role)=>{
     Axios.post(`${koneksi}/auth/updateroleuser`,{
-      id:8,email:"fikar@siapptn.com",role
+      email:this.props.user.email,role
     },getHeaderAuth())
     .then((res)=>{
       this.setState({
         roleUpdate:true,role
       })
       setTimeout(() => {
-        window.location="/jobs"
+        if(role == 'business'){
+          return window.location="/business"
+        }else if(role == 'influencer'){
+            return window.location="/influencers";
+        }
       }, 2000);
     }).catch((err)=>{
       this.setState({
@@ -69,3 +74,10 @@ export default class RoleValdiation extends Component {
         )
     }
 }
+const mapStateToProps = (state) => {
+  return{
+      user : state.user.user
+  }
+}
+
+export default connect(mapStateToProps) (RoleValdiation);

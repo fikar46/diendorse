@@ -9,6 +9,7 @@
     "axios": "^0.19.2",
     "lorem-ipsum": "^2.0.3",
     "mdbreact": "^4.25.1",
+    "query-string": "^6.10.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",
