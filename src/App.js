@@ -5,19 +5,56 @@ import Login from './pages/Login/Login'
 import SignUp from './pages/SignUp/SignUp'
 import Jobs from './pages/ProductList/Jobs'
 import RoleValdiation from './pages/SignUp/RoleValdiation'
+import { localStorageKey } from './helper/constant'
+import LoadingPage from './components/LoadingPage'
+import { connect} from 'react-redux'
+import {onRegisterSuccess} from './redux/actions'
 
-export default class App extends Component {
+
+class App extends Component {
+  state = {
+    checked : false
+  }
+  componentDidMount(){
+    this.keepLogin()
+  }
+
+  keepLogin = () => {
+    const dataLocalStorage = JSON.parse(localStorage.getItem(localStorageKey))
+    if(dataLocalStorage){
+      this.props.onRegisterSuccess(dataLocalStorage)
+      this.setState({checked : true})
+    }else{
+      this.setState({checked:true})
+    }
+  }
+
+
+
   render() {
+    
     return (
       <div>
         <Navbar />
-        <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/signup' component={SignUp} />
-          <Route path='/role' component={RoleValdiation} />
-          <Route path='/jobs' component={Jobs} />
-        </Switch>
+        {
+          this.state.checked === false?
+          <LoadingPage /> :
+          <Switch>
+            <Route path='/login' component={Login} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/role' component={RoleValdiation} />
+            <Route path='/jobs' component={Jobs} />
+          </Switch>
+        }
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return{
+    user : state.user.user
+  }
+}
+
+export default connect(mapStateToProps,{onRegisterSuccess})(App);

@@ -73,7 +73,7 @@ class productList extends Component {
     render() {
         return (
             <div className='container-fluid pt-5' style={{backgroundColor:'#f0f0f0'}}>
-                <h1 className='container'>Find Jobs {this.props.user.username}</h1>
+                <h1 className='container'>Find Jobs</h1>
                 <div className='container'>
                     <div className='row'>
                         {/* ====================== FILTERING SECTIONS ========================= */}
