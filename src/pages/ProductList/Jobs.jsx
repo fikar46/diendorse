@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardTitle, MDBCardText,MDBBtn} from 'mdbreact'
 import { LoremIpsum } from "lorem-ipsum";
+import {connect} from 'react-redux'
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -72,7 +73,7 @@ class productList extends Component {
     render() {
         return (
             <div className='container-fluid pt-5' style={{backgroundColor:'#f0f0f0'}}>
-                <h1 className='container'>Find Jobs</h1>
+                <h1 className='container'>Find Jobs {this.props.user.username}</h1>
                 <div className='container'>
                     <div className='row'>
                         {/* ====================== FILTERING SECTIONS ========================= */}
@@ -171,4 +172,11 @@ class productList extends Component {
     }
 }
 
-export default productList;
+const mapStateToProps = (state) => {
+    return{
+        user: state.user.user
+    }
+}
+
+
+export default connect(mapStateToProps)(productList);
