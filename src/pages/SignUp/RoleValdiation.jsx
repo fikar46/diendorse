@@ -11,14 +11,15 @@ class RoleValdiation extends Component {
     role:null
   }
   componentDidMount(){
+    console.log(this.props.user.id)
    
   }
   updateRole=(role)=>{
-    if(this.props.email != null){
-      var email = this.props.user.email;
+    if(this.props.user != null){
+      var id = this.props.user.id;
     }
     Axios.post(`${koneksi}/auth/updateroleuser`,{
-      email,role
+      id,role
     },getHeaderAuth())
     .then((res)=>{
       this.setState({

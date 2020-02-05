@@ -80,8 +80,10 @@ class Login extends Component {
                 return <Redirect to='/find-influencers' />
             }else if(this.props.user.role == 'influencer'){
                 return <Redirect to='/find-business' />
-            }else{
+            }else if(this.props.user.role == 'admin'){
                 return <Redirect to='/admin'/>
+            }else{
+                return <Redirect to='/role' />
             }
         }
         return (
