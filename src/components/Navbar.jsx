@@ -78,7 +78,7 @@ render() {
                 
                 <MDBDropdownMenu>
                   <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
-                  <MDBDropdownItem href="/login"><span onClick={this.onLogoutCilck}>Log out</span></MDBDropdownItem>
+                  <MDBDropdownItem href="/"><span onClick={this.onLogoutCilck}>Log out</span></MDBDropdownItem>
                 </MDBDropdownMenu>
               </MDBDropdown>
              

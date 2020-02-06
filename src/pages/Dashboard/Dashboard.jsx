@@ -2,6 +2,16 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux';
 
 class Dashboard extends Component {
+    createAds=()=>{
+        console.log(this.props.user.role)
+        if(this.props.user.role == "business"){
+            return(
+                <div className="text-right mb-2">
+                            <a className="btn btn-primary" href="/create-ads">Create Ads</a>
+                        </div>
+            )
+        }
+    }
     render() {
         return (
             <div className="pt-4 container">
@@ -16,11 +26,9 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <div className="text-right mb-2">
-                            <a className="btn btn-primary" href="/create-ads">Buat Iklan</a>
-                        </div>
+                        {this.createAds()}
                         <div className="card p-2">
-                            <p>Iklan yang sedang berjalan</p>
+                            <p>Ongoing ads</p>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { MDBContainer, MDBInput, MDBBtn, MDBIcon } from 'mdbreact';
+import InputRange from 'react-input-range';
+import "react-input-range/lib/css/index.css"
 export default class CreateProjectAds extends Component {
     state = {
-        radio: 2
+        radio: 2,
+        value: { min: 15, max: 45 },
       }
     optionCategory=()=>{
 
@@ -43,7 +46,7 @@ export default class CreateProjectAds extends Component {
                                 <small className="grey-text">(Opsional) Anda dapat mengupload file dalam bentuk gambar atau video untuk melengkapi deskripsi iklan</small>
                                 </label><br/>
                                 <div>
-                                    <button className="btn">+</button><br/>
+                                    <button className="btn btn-warning btn-sm" type="button">+</button><br/>
                                 </div>
                                 <label htmlFor="defaultFormContactMessageEx" className="black-text mt-2">
                                 Iklan akan di terbitkan di
@@ -71,23 +74,63 @@ export default class CreateProjectAds extends Component {
                                 <label htmlFor="defaultFormContactMessageEx" className="black-text">
                                 Sasaran lokasi permirsa
                                 </label>
-                                <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3" />
+                                <br/>
+                                <select className="form-control col-3" onChange={this.optionCategory}>
+                                    <option value="">Pilih Lokasi</option>
+                                    <option value="1">Se-Indonesia</option>
+                                    <option value="2">Banten</option>
+                                    <option value="x">Dki Jakarta</option>
+                                </select>
+                                <br />
                                 <label htmlFor="defaultFormContactMessageEx" className="black-text">
                                 Sasaran jenis kelamin pemirsa
                                 </label>
                                 <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3" />
+                                <br/>
                                 <label htmlFor="defaultFormContactMessageEx" className="black-text">
                                 Sasaran umur pemirsa
                                 </label>
-                                <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3" />
+                                <br/>
+                                <br/>
+                                <div className="col-6">
+
+                                <InputRange
+                                maxValue={65}
+                                minValue={8}
+                                formatLabel={value => `${value} Tahun`}
+                                value={this.state.value}
+                                onChange={value => this.setState({ value: value })}
+                                onChangeComplete={value => console.log(value)} />
+                                </div>
+                                <br/>
+                                <br/>
                                 <label htmlFor="defaultFormContactMessageEx" className="black-text">
                                 Estimasi Harga iklan
                                 </label>
-                                <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3" />
+                                <div className="row">
+                                <div className="input-group mb-3 col-md-4">
+                                  <div className="input-group-prepend">
+                                    <span className="input-group-text">Rp</span>
+                                  </div>
+                                  <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                                  <div className="input-group-append">
+                                    <span className="input-group-text">Min</span>
+                                  </div>
+                                </div>
+                                <div className="input-group mb-3 col-md-4">
+                                  <div className="input-group-prepend">
+                                    <span className="input-group-text">Rp</span>
+                                  </div>
+                                  <input type="text" className="form-control" aria-label="Amount (to the nearest dollar)" />
+                                  <div className="input-group-append">
+                                    <span className="input-group-text">Max</span>
+                                  </div>
+                                </div>
+                                </div>
                                 <div className="text-center mt-4">
                                         <MDBBtn color="primary"  type="submit">
                                             Submit
-                                            <MDBIcon far icon="paper-plane" className="ml-2" />
+                                            {/* <MDBIcon far icon="paper-plane" className="ml-2" /> */}
                                         </MDBBtn>
                                         </div>
                                     </form>                        
