@@ -16,6 +16,9 @@ class Dashboard extends Component {
                         </div>
                     </div>
                     <div className="col-md-8">
+                        <div className="text-right mb-2">
+                            <a className="btn btn-primary" href="/create-ads">Buat Iklan</a>
+                        </div>
                         <div className="card p-2">
                             <p>Iklan yang sedang berjalan</p>
                         </div>

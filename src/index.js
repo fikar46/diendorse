@@ -6,7 +6,7 @@ import {BrowserRouter} from 'react-router-dom'
 import { createStore,applyMiddleware } from 'redux'
 import {Provider} from 'react-redux'
 import ReduxThunk from 'redux-thunk'
-
+import "./style.css"
 import Reducers from './redux/reducers'
 
 import "@fortawesome/fontawesome-free/css/all.min.css";

@@ -44,7 +44,7 @@ render() {
 
   if(this.props.user !== null){
     return (
-      <MDBNavbar color="white" dark expand="md" className='px-5'>
+      <MDBNavbar color="white" light expand="md" className='px-5'>
         <MDBNavbarBrand href='/dashboard' style={{cursor:'pointer'}}>
           <strong className="black-text">Navbar</strong>
         </MDBNavbarBrand>
@@ -61,15 +61,21 @@ render() {
             </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
-            
             <MDBNavItem>
+            <div className="pt-2">
+                  <strong className="black-text ">{this.props.user.fullname}</strong>  
+                  <p>Rp 100.000</p>
+                </div>
+            </MDBNavItem>
+            <MDBNavItem>
+              
             <MDBDropdown>
-                <MDBDropdownToggle nav caret>
                 
-               
-                <strong className="black-text">{this.props.user.fullname}</strong>
-               
-                </MDBDropdownToggle>
+                  <MDBDropdownToggle nav caret >
+                  <img src="https://storage.siapptn.com/image/ava/avatar.png" class="rounded-circle" width="40" height="40"/>
+                  </MDBDropdownToggle>
+                
+                
                 <MDBDropdownMenu>
                   <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
                   <MDBDropdownItem href="/login"><span onClick={this.onLogoutCilck}>Log out</span></MDBDropdownItem>
