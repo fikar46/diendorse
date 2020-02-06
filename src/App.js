@@ -11,6 +11,8 @@ import { connect} from 'react-redux'
 import {onRegisterSuccess} from './redux/actions'
 import EmailVerification from './pages/SignUp/EmailVerification'
 import FindInfluencer from './pages/ProductList/FindInfluencer'
+import CreateProjectAds from './pages/ProductList/CreateProjectAds';
+import Dashboard from './pages/Dashboard/Dashboard';
 
 
 class App extends Component {
@@ -46,8 +48,10 @@ class App extends Component {
             <Route path='/signup' component={SignUp} />
             <Route path='/role' component={RoleValdiation} />
             <Route path='/find-business' component={Jobs} />
-             <Route path='/find-influencer' component={FindInfluencer} />
+            <Route path='/find-influencer' component={FindInfluencer} />
             <Route path='/email-verification' component={EmailVerification} />
+            <Route path='/create-ads' component={CreateProjectAds} />
+            <Route path='/dashboard' component={Dashboard} />
           </Switch>
         }
       </div>
