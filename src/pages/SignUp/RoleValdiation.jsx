@@ -25,13 +25,18 @@ class RoleValdiation extends Component {
       this.setState({
         roleUpdate:true,role
       })
+
+      var user = JSON.parse(localStorage.getItem('user'));
+      user.role = role
+
+      localStorage.setItem('user', JSON.stringify(user));
       setTimeout(() => {
         if(role == 'business'){
           return window.location="/find-influencer"
         }else if(role == 'influencer'){
             return window.location="/find-business";
         }
-      }, 2000);
+      }, 3000);
     }).catch((err)=>{
       this.setState({
         roleUpdate:false,role
