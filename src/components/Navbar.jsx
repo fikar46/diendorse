@@ -40,6 +40,15 @@ roleBrowse=()=>{
     )
   }
 }
+createAds=()=>{
+  if(this.props.user.role == "business"){
+      return(
+        <MDBNavLink to='/create-ads'>
+        <strong className="black-text">Create Ads</strong>
+                  </MDBNavLink>
+      )
+  }
+}
 render() {
 
   if(this.props.user !== null){
@@ -59,13 +68,16 @@ render() {
             <MDBNavItem>
                 {this.roleBrowse()}
             </MDBNavItem>
+            <MDBNavItem>
+              {this.createAds()}
+            </MDBNavItem>
           </MDBNavbarNav>
           <MDBNavbarNav right>
             <MDBNavItem>
             <div className="pt-2">
                   <strong className="black-text ">{this.props.user.fullname}</strong>  
-                  <p>Rp 100.000</p>
-                </div>
+                  <p>{this.props.user.role}</p>
+            </div>
             </MDBNavItem>
             <MDBNavItem>
               

@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 
 class Dashboard extends Component {
     createAds=()=>{
-        console.log(this.props.user.role)
         if(this.props.user.role == "business"){
             return(
                 <div className="text-right mb-2">
