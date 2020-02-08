@@ -7,6 +7,8 @@ import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
 import LoadingPage from './../../components/LoadingPage'
 import Swal from 'sweetalert2';
+import { localStorageKey } from '../../helper/constant';
+import {onRegisterSuccess} from './../../redux/actions'
 
 const apiUrl = 'https://x.rajaapi.com/MeP7c5ne'
 function mapStateToProps(state) {
@@ -25,7 +27,8 @@ class MyProfile extends Component {
             followers_ig : '',
             engagement_ig : '',
             price :'',
-            username_ig :''
+            username_ig :'',
+            fullname : ''
         },
         isOpenModal : false,
         loading : false,
@@ -144,6 +147,14 @@ class MyProfile extends Component {
         .then((res) => {
             if(!res.data.error){
                 this.setState({loading :false , isOpenModal : false,dataDetail : res.data.data})
+                var dataStorage = JSON.parse(localStorage.getItem(localStorageKey))
+                console.log(dataStorage)
+                console.log(res.data.data)
+                dataStorage.fullname = res.data.data.fullname
+                localStorage.setItem(localStorageKey , JSON.stringify(dataStorage))
+                this.props.onRegisterSuccess(dataStorage)
+
+
                 return alert('Edit Data Success')
 
             }
@@ -356,7 +367,7 @@ class MyProfile extends Component {
                                     </div>
                                 </div>
                                 <div className='col-md-8'>
-                                    <h1>{this.props.user.fullname} <span style={{fontSize:'18px',color :"#AAA",fontStyle:'italic',textTransform:'capitalize'}}> {this.props.user.role} </span> </h1>
+                                    <h1>{this.state.dataDetail.fullname} <span style={{fontSize:'18px',color :"#AAA",fontStyle:'italic',textTransform:'capitalize'}}> {this.props.user.role} </span> </h1>
                                     <h5>{tagline ? tagline : '-'}</h5>
                                     
                                     <MDBCardText>
@@ -385,7 +396,7 @@ class MyProfile extends Component {
                                     <div>
                                         <MDBIcon fab icon="instagram" />
                                         <span className='ml-2'>
-                                        {followers_ig ? followers_ig : '-'} Followers , {engagement_ig ? engagement_ig : '-'} Engagement Rate
+                                        {followers_ig ? followers_ig : '-'} Followers , {engagement_ig ? engagement_ig + '%' : '-'} Engagement Rate
                                         </span>
                                     </div>
                                     </MDBCardText>
@@ -441,5 +452,5 @@ class MyProfile extends Component {
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps,{onRegisterSuccess}
 )(MyProfile);

@@ -13,7 +13,7 @@ import EmailVerification from './pages/SignUp/EmailVerification'
 import FindInfluencer from './pages/ProductList/FindInfluencer'
 import CreateProjectAds from './pages/ProductList/CreateProjectAds';
 import Dashboard from './pages/Dashboard/Dashboard';
-import MyProfile from './pages/Profile/MyProfile'
+import MyProfile from './pages/Profile/index'
 import PageNotFound from './pages/NotFound/PageNotFound'
 import LandingPage from './pages/LandingPage/LandingPage'
 
