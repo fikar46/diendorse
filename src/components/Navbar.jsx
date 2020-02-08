@@ -18,7 +18,6 @@ onLogoutCilck =()=> {
   if(alert){
     localStorage.removeItem(localStorageKey)
     this.props.onLogout()
-    alert('You Are Successfully Logout')
     window.location = '/login'
     this.setState({isLogout : true})
     
@@ -90,7 +89,9 @@ render() {
                 
                 <MDBDropdownMenu>
                   <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
-                  <MDBDropdownItem href="/"><span onClick={this.onLogoutCilck}>Log out</span></MDBDropdownItem>
+                  <span onClick={this.onLogoutCilck}>
+                  <MDBDropdownItem href="#">Log out</MDBDropdownItem>
+                  </span>
                 </MDBDropdownMenu>
               </MDBDropdown>
              

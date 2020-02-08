@@ -51,8 +51,7 @@ class productList extends Component {
     componentDidUpdate(prevProps,prevState){
         
         var {priceFrom,priceTo,locations,categories,minInstagram,minEngagementRate} = this.state
-        console.log(prevState.locations)
-        console.log(this.state.locations)
+       
         
         if(prevState.priceFrom != priceFrom || prevState.priceTo != this.state.priceTo || prevState.locations.length != this.state.locations.length || this.state.categories.length !== prevState.categories.length){
             if(locations.length === 0){
@@ -73,7 +72,6 @@ class productList extends Component {
             console.log(locations)
             let filteredData = this.state.data.filter((val) => {
                 return (((val.priceFrom >= priceFrom) && (val.priceFrom <= priceTo)) || priceFrom === 'all' ) && (categories.includes(val.categories.toLowerCase()) || categories === 'all') && (locations.includes(val.location.toLowerCase()) || locations === 'all' ) 
-                
             })
             this.setState({filteredData})
         }
