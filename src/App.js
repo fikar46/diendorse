@@ -14,6 +14,8 @@ import FindInfluencer from './pages/ProductList/FindInfluencer'
 import CreateProjectAds from './pages/ProductList/CreateProjectAds';
 import Dashboard from './pages/Dashboard/Dashboard';
 import MyProfile from './pages/Profile/MyProfile'
+import PageNotFound from './pages/NotFound/PageNotFound'
+import LandingPage from './pages/LandingPage/LandingPage'
 
 
 class App extends Component {
@@ -45,15 +47,17 @@ class App extends Component {
           this.state.checked === false?
           <LoadingPage /> :
           <Switch>
-            <Route path='/login' component={Login} />
-            <Route path='/signup' component={SignUp} />
-            <Route path='/role' component={RoleValdiation} />
-            <Route path='/profile' component={MyProfile} />
-            <Route path='/find-business' component={Jobs} />
-            <Route path='/find-influencer' component={FindInfluencer} />
-            <Route path='/email-verification' component={EmailVerification} />
-            <Route path='/create-ads' component={CreateProjectAds} />
-            <Route path='/dashboard' component={Dashboard} />
+            <Route exact path='/' component={LandingPage} />
+            <Route exact path='/login' component={Login} />
+            <Route exact path='/signup' component={SignUp} />
+            <Route exact path='/role' component={RoleValdiation} />
+            <Route exact path='/profile' component={MyProfile} />
+            <Route exact path='/find-business' component={Jobs} />
+            <Route exact path='/find-influencer' component={FindInfluencer} />
+            <Route exact path='/email-verification' component={EmailVerification} />
+            <Route exact path='/create-ads' component={CreateProjectAds} />
+            <Route exact path='/dashboard' component={Dashboard} />
+            <Route path="*" component={PageNotFound} />
           </Switch>
         }
       </div>

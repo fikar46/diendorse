@@ -233,7 +233,7 @@ class MyProfile extends Component {
                     <MDBModalHeader toggle={this.toogle}>Edit Your Data</MDBModalHeader>
                     <MDBModalBody>
                         <label htmlFor="fullname" className="grey-text">
-                            Your Fullname
+                            Your Fullname Business
                         </label>
                         <input type="text" defaultValue={this.props.user.fullname ? this.props.user.fullname : ""} id="fullname" ref='fullname' className="form-control" />
 
