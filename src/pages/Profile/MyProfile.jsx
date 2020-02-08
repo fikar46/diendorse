@@ -37,7 +37,7 @@ class MyProfile extends Component {
     getData = () => {
         Axios.get(koneksi + '/auth/getuserdetail/' + this.props.user.id,getHeaderAuth())
         .then((res) => {
-            if(!res.data.error){
+            if(!res.data.error && res.data.data !== undefined){
                 this.setState({dataDetail: res.data.data})
             }
         })
