@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux';
+import { Link } from 'react-router-dom';
 
 class Dashboard extends Component {
     createAds=()=>{
         if(this.props.user.role == "business"){
             return(
                 <div className="text-right mb-2">
-                            <a className="btn btn-primary" href="/create-ads">Create Ads</a>
-                        </div>
+                    <Link className="btn btn-primary" to="/create-ads">Create Ads</Link>
+                </div>
             )
         }
     }

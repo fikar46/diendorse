@@ -6,14 +6,17 @@ import {koneksi} from "../../environment";
 import Axios from 'axios';
 import {connect} from 'react-redux';
 import {getHeaderAuth} from '../../helper/service'
+import Swal from 'sweetalert2';
+import { Redirect } from 'react-router-dom';
 class CreateProjectAds extends Component {
     state = {
         radio: 2,
         value: { min: 15, max: 45 },
         category:"",
-        upload_at:null,
+        upload_at:"",
         location_ads:"",
-        sex_ads:""
+        sex_ads:"",
+        loading:false
       }
     optionCategory=(n)=>{
       this.setState({category:n.target.value})
@@ -27,24 +30,67 @@ class CreateProjectAds extends Component {
         });
       }
     buttonSubmit=()=>{
+      this.setState({loading:true})
       var product_name = this.refs.product_name.value;
       var {upload_at,category,location_ads,sex_ads,value} = this.state;
       var description = this.refs.description.value;
       var min = this.refs.min.value;
       var max = this.refs.max.value;
-      var id_user = this.props.user.id
-      console.log(id_user)
-      var ect_category="";
-      var file="";
+      var id_user = this.props.user.id;
+      if(category == "x"){
+        var ect_category="lain lain";
+      }else{
+        var ect_category=category;
+      }
+      var file="test.jpg";
       var estimation_ads = JSON.stringify({min,max})
       var age_ads = JSON.stringify(value)
-      Axios.post(`${koneksi}/project/create-ads`,{
-        id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads
-      },getHeaderAuth()).then((res)=>{
-        console.log(res.data)
-      }).catch((err)=>{
-          console.log(err)
-      })
+      var validation = [id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads];
+      var status;
+      
+      if(product_name == ""&&category==""&&ect_category==""&&file==""&&upload_at==""&&location_ads==""&&sex_ads==""&&age_ads==""&&description==""&&estimation_ads==""){  
+         status = false
+      }else{
+        status = true
+      }
+      if(status){
+          Axios.post(`${koneksi}/project/create-ads`,{
+            id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads
+          },getHeaderAuth()).then((res)=>{
+              Swal.fire(
+                'Project disimpan',
+                'Project iklan telah berhasil di publish!',
+                'success'
+              ).then((result)=>{
+                this.setState({loading:false})
+                if(result.value){
+                  window.location="/dashboard"
+                }
+              })         
+          }).catch((err)=>{
+              console.log(err)
+              this.setState({loading:false})
+          })
+      }else{
+          alert("Form wajib diisi semua.")
+      }
+    }
+    renderButton=()=>{
+      if(this.state.loading){
+        return(
+          <MDBBtn color="primary"  type="button">
+                                            <div  style={{color:"white"}} className="spinner-border mx-4" role="status">
+                                            <span className="sr-only"></span>
+                                        </div>
+          </MDBBtn>
+        )
+      }else{
+        return(
+          <MDBBtn color="primary"  type="button" onClick={this.buttonSubmit}>
+                                            Submit
+          </MDBBtn>
+        )
+      }
     }
     render() {
         return (
@@ -179,10 +225,7 @@ class CreateProjectAds extends Component {
                                 </div>
                                 </div>
                                 <div className="text-center mt-4">
-                                        <MDBBtn color="primary"  type="button" onClick={this.buttonSubmit}>
-                                            Submit
-                                            {/* <MDBIcon far icon="paper-plane" className="ml-2" /> */}
-                                        </MDBBtn>
+                                        {this.renderButton()}
                                         </div>
                                     </form>                        
                     </MDBContainer>
