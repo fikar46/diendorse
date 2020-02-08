@@ -5,8 +5,11 @@ import moment from 'moment'
 import Axios from 'axios';
 import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
+import LoadingPage from './../../components/LoadingPage'
+import Autocomplete from 'react-autocomplete'
 
 
+const apiUrl = 'https://x.rajaapi.com/MeP7c5ne'
 function mapStateToProps(state) {
     return {
         user : state.user.user
@@ -26,19 +29,69 @@ class MyProfile extends Component {
             username_ig :''
         },
         isOpenModal : false,
-        loading : false
+        loading : false,
+        got : false,
+        kabupatens : null,
+        value : '',
+        provinsi : [],
+        kabupaten : [],
+        kecamatan : [],
+        loadingKabupaten : false,
+        loadingKecamatan : false,
         
     }
 
     componentDidMount(){
         this.getData()
+        this.getDataKabupaten()
+        this.getDataProvinsi()
+    }
+
+    getDataProvinsi = () => {
+        Axios.get('https://x.rajaapi.com/poe')
+        .then((res) => {
+            if(res.data.success){
+                this.setState({token : res.data.token})
+                Axios.get(`https://x.rajaapi.com/MeP7c5ne${res.data.token}/m/wilayah/provinsi`)
+                .then((resData) => {
+                    this.setState({provinsi : resData.data.data})
+                })
+                .catch((err) => {
+                   console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     getData = () => {
         Axios.get(koneksi + '/auth/getuserdetail/' + this.props.user.id,getHeaderAuth())
         .then((res) => {
-            if(!res.data.error && res.data.data !== undefined){
-                this.setState({dataDetail: res.data.data})
+            if(!res.data.error){
+                if(res.data.data !== undefined){
+                    this.setState({dataDetail: res.data.data,got:true})
+                }else{
+                    this.setState({got : true})
+                }
+            }
+            
+        })
+        .catch((err) => {
+            console.log(err)
+            this.setState({got : true})
+        })
+    }
+
+    getDataKabupaten = () => {
+        Axios.get(koneksi + '/auth/getallkabupaten' , getHeaderAuth())
+        .then((res) => {
+            if(!res.data.error){
+                var data = res.data.data.map((val) => {
+                    return {id_kab : val.id_kab , label : val.nama}
+                })
+                this.setState({kabupatens : data})
             }
         })
     }
@@ -49,8 +102,18 @@ class MyProfile extends Component {
 
     onSaveClick = () => {
         this.setState({loading:true})
-        var keys = 'tagline,description,place,birth,followers_ig,engagement_ig,username_ig,fullname'.split(',')
+        var keys = 'tagline,description,birth,followers_ig,engagement_ig,username_ig,fullname'.split(',')
         var list_prices = ['feed','story','both']
+        console.log(this.refs.prov.value)
+        if(this.refs.prov.value != 0 || this.refs.kab.value != 0 || this.refs.kec.value !=0){
+            var place = {
+                prov : this.state.provinsi.filter((val) => val.id == this.refs.prov.value)[0].name,
+                kab : this.state.kabupaten.filter((val) => val.id == this.refs.kab.value)[0].name,
+                kec : this.state.kecamatan.filter((val) => val.id == this.refs.kec.value)[0].name
+            }
+        }
+        var place = ''
+        // console.log(place)
         var prices_data = {}        
         var data = {}
         
@@ -64,8 +127,9 @@ class MyProfile extends Component {
         if(data.fullname  == this.props.user.fullname){
             data.fullname = ''
         }
-
-
+        if(place){
+            data['place'] = JSON.stringify(place)
+        }
 
         list_prices.forEach((val) => {
             prices_data[val] = Number(this.refs[val].value)
@@ -73,6 +137,7 @@ class MyProfile extends Component {
 
         data['price'] = JSON.stringify(prices_data)
 
+        console.log(data)
         Axios.post(koneksi + '/auth/completeprofile/' + this.props.user.id ,data,getHeaderAuth())
         .then((res) => {
             if(!res.data.error){
@@ -85,8 +150,47 @@ class MyProfile extends Component {
             console.log(err)
         })
     }
+    renderOption = (state) => {
+        var jsx =  state.map((val) => {
+            return(
+                <option key={val.id}  value={val.id} > {val.name} </option>
+            )
+        })
+        return jsx
+    }
+
+    onChangeProvHandler = (event) => {
+        this.setState({loadingKabupaten : true , kabupaten : [] , kecamatan : []})
+        this.refs.kab.value = 0
+        Axios.get(`${apiUrl}${this.state.token}/m/wilayah/kabupaten?idpropinsi=${event.target.value}`)
+        .then((res) => {
+            if(res.data.success){
+                this.setState({kabupaten : res.data.data , loadingKabupaten : false})
+            }
+        })
+        .catch((err) => {
+            this.setState({modalOpen : true, error : "Pastikan Perangkat Anda Terhubung dengan Internet"})
+        })
+    }
+
+    onChangeKabHandler = (event) => {
+        this.setState({loadingKecamatan : true ,kecamatan : []})
+        this.refs.kec.value = 0
+        Axios.get(`${apiUrl}${this.state.token}/m/wilayah/kecamatan?idkabupaten=${event.target.value}`)
+        .then((res) => {
+            if(res.data.success){
+                this.setState({kecamatan : res.data.data , loadingKecamatan : false})
+            }
+        })
+        .catch((err) => {
+            this.setState({modalOpen : true, error : "Pastikan Perangkat Anda Terhubung dengan Internet"})
+        })
+    }
 
     render() {
+        if(this.state.got == false || this.state.kabupatens == null){
+            return <LoadingPage />
+        }
         var {tagline,description,place,birth,followers_ig,engagement_ig,price,username_ig} = this.state.dataDetail
         console.log(this.props.user)
         return (
@@ -104,14 +208,22 @@ class MyProfile extends Component {
                         <label htmlFor="place" className="grey-text mt-3">
                             Your Place
                         </label>
-                        <select defaultValue={place ? place : ""} id="place" ref='place' className="form-control" >
-                            <option value="1">Purwokerto</option>
-                            <option value="1">Purwokerto</option>
-                            <option value="1">Purwokerto</option>
-                            <option value="1">Purwokerto</option>
-                            <option value="1">Purwokerto</option>
-                            <option value="1">Purwokerto</option>
-                        </select>
+                        <div className='row mx-3'>
+                            <select className='form-control col-4' ref='prov' defaultValue={0} onChange={this.onChangeProvHandler}>
+                                <option value={0} disabled> {this.state.provinsi.length > 0 ? 'Pilih Provinsi' : 'loading ...'} </option>
+                                {this.renderOption(this.state.provinsi)}
+                            </select>
+
+                            <select className='form-control col-4' ref='kab' defaultValue={0} onChange={this.onChangeKabHandler} >
+                                <option value={0} disabled>{this.state.loadingKabupaten ? 'loading ...' : 'Pilih Kabupaten'}</option>
+                                {this.renderOption(this.state.kabupaten)}
+                            </select>
+
+                            <select className='form-control col-4' ref='kec'  defaultValue={0}>
+                                <option value={0}>{this.state.loadingKecamatan ? 'loading...' : 'Pilih Kecamatan'}</option>
+                                {this.renderOption(this.state.kecamatan)}
+                            </select>
+                        </div>
 
                         <label htmlFor="birth" className="grey-text mt-3">
                             Your Birthday
@@ -137,9 +249,9 @@ class MyProfile extends Component {
                             Your Price Expectation For Endorse
                         </label>
                         <div className='row px-3'>
-                           <input type='number' ref='feed' placeholder='feed' className='col-3 form-control'  />
-                           <input type='number' ref='story' placeholder='story' className='col-3 form-control mx-2'  />
-                           <input type='number' ref='both' placeholder='both' className='col-3 form-control'  />
+                           <input type='number' defaultValue={this.state.dataDetail.price ? JSON.parse(this.state.dataDetail.price).feed : ''} ref='feed' placeholder='feed' className='col-3 form-control'  />
+                           <input type='number'  defaultValue={this.state.dataDetail.price ? JSON.parse(this.state.dataDetail.price).story : ''}  ref='story' placeholder='story' className='col-3 form-control mx-2'  />
+                           <input type='number'  defaultValue={this.state.dataDetail.price ? JSON.parse(this.state.dataDetail.price).both : ''}  ref='both' placeholder='both' className='col-3 form-control'  />
                         </div>
 
                         <label htmlFor="tagline" className="grey-text mt-3">
@@ -191,15 +303,15 @@ class MyProfile extends Component {
                                     <div>
                                         <MDBIcon icon="map-marker-alt" /> 
                                         <span className='ml-2'>
-                                        {place ? place : '-'}
+                                        {place ? `${JSON.parse(place).kec} , ${JSON.parse(place).kab} , ${JSON.parse(place).prov}`  : '-'}
                                         </span>
                                     </div>
 
                                     <div>
                                         <MDBIcon icon="clock" />
                                         <span className='ml-2'>
-                                            {console.log(this.props.user.created_at)}
-                                        Joined Since {moment(this.props.user.created_at.split('T')[0], "YYYY-MM-DD").fromNow()}
+                                            {/* {console.log(this.props.user.created_at)} */}
+                                        Joined Since { moment(this.props.user.created_at.split('T')[0], "YYYY-MM-DD").fromNow()}
                                         </span>
                                     </div>
 
@@ -252,7 +364,7 @@ class MyProfile extends Component {
                                             0
                                         </div>
                                         <div  className='col-md-10'>
-                                            Clients
+                                            Ongoing Job
                                         </div>
                                         
                                     </div>

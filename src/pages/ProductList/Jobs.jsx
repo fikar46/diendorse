@@ -49,6 +49,7 @@ class productList extends Component {
     }
 
     componentDidUpdate(prevProps,prevState){
+        
         var {priceFrom,priceTo,locations,categories,minInstagram,minEngagementRate} = this.state
         console.log(prevState.locations)
         console.log(this.state.locations)
