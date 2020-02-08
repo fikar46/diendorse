@@ -111,8 +111,9 @@ class MyProfile extends Component {
                 kab : this.state.kabupaten.filter((val) => val.id == this.refs.kab.value)[0].name,
                 kec : this.state.kecamatan.filter((val) => val.id == this.refs.kec.value)[0].name
             }
+        }else{
+            var place = ''
         }
-        var place = ''
         // console.log(place)
         var prices_data = {}        
         var data = {}
