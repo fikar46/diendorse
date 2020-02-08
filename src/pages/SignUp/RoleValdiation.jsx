@@ -36,7 +36,7 @@ class RoleValdiation extends Component {
         }else if(role == 'influencer'){
             return window.location="/find-business";
         }
-      }, 3000);
+      }, 1400);
     }).catch((err)=>{
       this.setState({
         roleUpdate:false,role
