@@ -13,6 +13,7 @@ import EmailVerification from './pages/SignUp/EmailVerification'
 import FindInfluencer from './pages/ProductList/FindInfluencer'
 import CreateProjectAds from './pages/ProductList/CreateProjectAds';
 import Dashboard from './pages/Dashboard/Dashboard';
+import MyProfile from './pages/Profile/MyProfile'
 
 
 class App extends Component {
@@ -47,6 +48,7 @@ class App extends Component {
             <Route path='/login' component={Login} />
             <Route path='/signup' component={SignUp} />
             <Route path='/role' component={RoleValdiation} />
+            <Route path='/profile' component={MyProfile} />
             <Route path='/find-business' component={Jobs} />
             <Route path='/find-influencer' component={FindInfluencer} />
             <Route path='/email-verification' component={EmailVerification} />
