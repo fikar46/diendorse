@@ -112,6 +112,7 @@ class productList extends Component {
                     sex_ads : val.sex_ads,
                     status_ads : val.status_ads,
                     upload_at : val.upload_at,
+                    days : val.days,
                     loading : false
                 }
             })
@@ -188,10 +189,11 @@ class productList extends Component {
                             </div>
                             <div className='col-4'>
                                 <h6 style={{fontWeight:'bold'}}>
-                                   {formatRupiah(val.priceFrom , 'Rp')} - {formatRupiah(val.priceTo,'Rp')}
+                                   {formatRupiah(val.priceFrom , 'Rp')} - {formatRupiah(val.priceTo,'Rp')} / Day
                                 </h6>
                                 <MDBCardText>
-                                    N/A Bids
+                                    {val.days} Day <br/>
+                                    0 Bids 
                                 </MDBCardText>
                                 <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}}>Bid Now</MDBBtn>
                             </div>

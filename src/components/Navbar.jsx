@@ -33,9 +33,7 @@ roleBrowse=()=>{
     )
   }else if(this.props.user.role == "business"){
     return(
-      <MDBNavLink to='/find-influencer'>
-      <strong className="black-text">Find influencer</strong>
-                </MDBNavLink>
+        null
     )
   }
 }
@@ -54,7 +52,7 @@ render() {
     return (
       <MDBNavbar color="white" light expand="md" className='px-5'>
         <MDBNavbarBrand href='/dashboard' style={{cursor:'pointer'}}>
-          <strong className="black-text">Navbar</strong>
+          <strong className="black-text">Diendorse</strong>
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={this.toggleCollapse} />
         <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
