@@ -18,7 +18,7 @@ import PageNotFound from './pages/NotFound/PageNotFound'
 import LandingPage from './pages/LandingPage/LandingPage'
 import OnGoingBusiness from './pages/Dashboard/business/OnGoing'
 import HistoryBusiness from './pages/Dashboard/business/History'
-
+import ProjectDetail from './pages/ProductList/JobDetail'
 
 class App extends Component {
   state = {
@@ -61,6 +61,7 @@ class App extends Component {
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path="/ongoing-ads" component={OnGoingBusiness}/>
             <Route exact path="/history-ads" component={HistoryBusiness}/>
+            <Route exact path="/project-detail/:id" component={ProjectDetail}/>
             <Route path="*" component={PageNotFound} />
           </Switch>
         }
