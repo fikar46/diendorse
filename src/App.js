@@ -16,6 +16,8 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import MyProfile from './pages/Profile/index'
 import PageNotFound from './pages/NotFound/PageNotFound'
 import LandingPage from './pages/LandingPage/LandingPage'
+import OnGoingBusiness from './pages/Dashboard/business/OnGoing'
+import HistoryBusiness from './pages/Dashboard/business/History'
 
 
 class App extends Component {
@@ -57,6 +59,8 @@ class App extends Component {
             <Route exact path='/email-verification' component={EmailVerification} />
             <Route exact path='/create-ads' component={CreateProjectAds} />
             <Route exact path='/dashboard' component={Dashboard} />
+            <Route exact path="/ongoing-ads" component={OnGoingBusiness}/>
+            <Route exact path="/history-ads" component={HistoryBusiness}/>
             <Route path="*" component={PageNotFound} />
           </Switch>
         }

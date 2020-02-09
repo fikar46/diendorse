@@ -7,7 +7,10 @@ import Axios from 'axios';
 import {connect} from 'react-redux';
 import {getHeaderAuth} from '../../helper/service'
 import Swal from 'sweetalert2';
-import { Redirect } from 'react-router-dom';
+import { localStorageKey } from '../../helper/constant';
+import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+
+
 class CreateProjectAds extends Component {
     state = {
         radio: 2,
@@ -19,7 +22,9 @@ class CreateProjectAds extends Component {
         loading:false,
         categoryOptions:[],
         priceMin:0,
-        priceMax:1
+        priceMax:1,
+        fileUpload:[],
+        loadUpload:false
       }
     componentDidMount(){
       this.getCategoryAds()
@@ -56,7 +61,7 @@ class CreateProjectAds extends Component {
       }else{
         var ect_category=category;
       }
-      var file="test.jpg";
+      var file=JSON.stringify(this.state.fileUpload);
       var estimation_ads = JSON.stringify({min,max})
       var age_ads = JSON.stringify(value)
       var status;
@@ -136,44 +141,118 @@ class CreateProjectAds extends Component {
         )
       }
     }
+    uploadFile=(event)=>{
+      this.setState({loadUpload:true})
+      var formData = new FormData()
+      var auth = JSON.parse(localStorage.getItem(localStorageKey));
+
+      var headers = {
+          headers: 
+          {'Content-Type': 'multipart/form-data',
+          'Authorization' : `Bearer ${auth.token}`
+          }   
+      }
+      if(event.target){
+        formData.append('file', event.target.files[0])
+      }
+      Axios.post(`${koneksi}/project/upload-file`,formData,headers)
+      .then((res)=>{
+          this.setState({fileUpload:[...this.state.fileUpload,res.data[0]]})
+          console.log(this.state.fileUpload) 
+          this.setState({loadUpload:false})
+      }).catch((err)=>{
+        console.log(err) 
+        this.setState({loadUpload:false})
+      })
+    }
+    deleteUpload=(index)=>{
+      var data = this.state.fileUpload;
+      data.splice(index,1)
+      this.setState({fileUpload:data})
+    }
+    getDataAfterUpload=()=>{
+      if(this.state.fileUpload.length>0){
+        var data = this.state.fileUpload.map((item,i)=>{
+          return(
+              <tr>
+                <td>{i+1}</td>
+                <td>{item.originalname}</td>
+                <td>{item.size/1000} kb</td>
+                <td>{item.mimetype}</td>
+                <td><MDBIcon icon="trash-alt" onClick={()=>this.deleteUpload(i)}/></td>
+              </tr>
+              
+              
+          )
+        })
+        return data;
+      }
+    }
+    buttonUpload=()=>{
+      if(this.state.loadUpload){
+          return(
+            <label className="btn btn-success" htmlFor="loadingupload" aria-describedby="inputGroupFileAddon02"><div  style={{color:"white"}} className="spinner-border mx-4" role="status">
+            <span className="sr-only"></span>
+        </div></label>
+
+            
+          )
+
+      }else{
+return(
+  <label className="btn btn-success" htmlFor="inputGroupFile" aria-describedby="inputGroupFileAddon02">Choose file</label>
+
+)
+       
+      }
+    }
     render() {
         return (
             <div className=" pt-5">
                     <MDBContainer>
                             <form>
                                 <p className="h3 text-center mb-4">Create Ads</p>
-                                <label htmlFor="defaultFormContactNameEx" className="black-text">
+                                <label htmlFor="productName" className="black-text">
                                     Product Name for your ads
                                 </label>
-                                <input type="text" id="defaultFormContactNameEx" className="form-control" ref="product_name" placeholder="Your Product Name"/>
+                                <input type="text" id="productName" className="form-control" ref="product_name" placeholder="Your Product Name"/>
                                 <br />
-                                <label htmlFor="defaultFormContactEmailEx" className="black-text">
+                                <label htmlFor="categoryAds" className="black-text">
                                 Category ads
                                 </label>
                                 <br/>
-                                <select className="form-control col-3" onChange={this.optionCategory}>
+                                <select className="form-control col-3" onChange={this.optionCategory} id="categoryAds">
                                     <option value="">Choose Category</option>
                                     {this.optionDataCategory()}
                                     <option value="x">Others</option>
                                 </select>
                                 <br />
                                 {this.openEtcCategory()}
-                                <label htmlFor="defaultFormContactSubjectEx" className="black-text">
+                                <label htmlFor="description" className="black-text">
                                 Description ads
                                 </label>
-                                <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="9" ref="description" placeholder="Input your ads description"/>
+                                <textarea type="text" id="description" className="form-control" rows="9" ref="description" placeholder="Input your ads description"/>
                                 <br />
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text">
+                                <label htmlFor="uploadFile" className="black-text">
                                 Upload file for support your description<br/>
                                 <small className="grey-text">(Opsional) Anda dapat mengupload file dalam bentuk gambar atau video untuk melengkapi deskripsi iklan</small>
                                 </label><br/>
-                                <div>
-                                    <button className="btn btn-warning btn-sm" type="button">+</button><br/>
+                                 <div className="input-group my-3">
+                                  <div className="custom-file">
+                                    {this.buttonUpload()}
+                                    <input type="file" className="custom-file-input" id="inputGroupFile" onChange={this.uploadFile}/>
+                                  </div>
                                 </div>
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text mt-2">
+                                <MDBTable>
+                                    <MDBTableBody>
+                                {this.getDataAfterUpload()}
+                                    </MDBTableBody>
+                                </MDBTable>
+                                
+                                <label htmlFor="publish_at" className="black-text mt-2">
                                 Ads will publish at
                                 </label>
-                                 <div className="my-3">
+                                 <div className="mb-3">
                                   <div className="form-check">
                                     <input className="form-check-input" type="radio" name="PlatformRadios" id="PlatformRadios1" defaultValue="platform1" onClick={()=>this.setState({upload_at:1})}/>
                                     <label className="form-check-label" htmlFor="PlatformRadios1">
@@ -193,7 +272,7 @@ class CreateProjectAds extends Component {
                                     </label>
                                   </div>
                                 </div>
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text">
+                                <label htmlFor="locationGoals" className="black-text">
                                 Audience location goals
                                 </label>
                                 <br/>
@@ -204,7 +283,7 @@ class CreateProjectAds extends Component {
                                     <option value="x">Dki Jakarta</option>
                                 </select>
                                 <br />
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text">
+                                <label htmlFor="gender" className="black-text">
                                 Audience gender goal
                                 </label>
                                 <div className="my-3">
@@ -228,7 +307,7 @@ class CreateProjectAds extends Component {
                                   </div>
                                 </div>
                                 <br/>
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text">
+                                <label htmlFor="agegoal" className="black-text">
                                  Audience age goal
                                 </label>
                                 <br/>
@@ -245,7 +324,7 @@ class CreateProjectAds extends Component {
                                 </div>
                                 <br/>
                                 <br/>
-                                <label htmlFor="defaultFormContactMessageEx" className="black-text">
+                                <label htmlFor="estimated" className="black-text">
                                 Estimated price of advertising
                                 </label>
                                 <div className="row">

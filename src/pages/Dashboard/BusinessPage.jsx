@@ -5,31 +5,37 @@ import { MDBTable, MDBTableBody, MDBTableHead, MDBIcon } from 'mdbreact';
 import Axios from 'axios';
 import { koneksi } from '../../environment';
 import {getHeaderAuth} from '../../helper/service'
+import LoadingPage from '../../components/LoadingPage';
 class BusinessPage extends Component {
     state={
         ongoing:[],
-        history:[]
+        history:[],
+        loadingOngoing:false,
+        loadingHistory:false
     }
     componentDidMount(){
         this.getOngoingAds()
         this.getHistoryAds()
     }
     getOngoingAds=()=>{
+        this.setState({loadingOngoing:true})
         Axios.get(`${koneksi}/project/get-ongoing-ads/${this.props.user.id}`,getHeaderAuth())
         .then((res)=>{
-            console.log(res.data)
-            this.setState({ongoing:res.data})
+            this.setState({ongoing:res.data,loadingOngoing:false})
         }).catch((err)=>{
             console.log(err)
+            this.setState({loadingOngoing:false})
         })
     }
     getHistoryAds=()=>{
+        this.setState({loadingHistory:true})
         Axios.get(`${koneksi}/project/get-history-ads/${this.props.user.id}`,getHeaderAuth())
         .then((res)=>{
             console.log(res.data)
-            this.setState({history:res.data})
+            this.setState({history:res.data,loadingHistory:false})
         }).catch((err)=>{
             console.log(err)
+            this.setState({loadingHistory:false})
         })
     }
     createAds=()=>{
@@ -111,6 +117,29 @@ class BusinessPage extends Component {
      }
     
     render() {
+        if(this.state.loadingOngoing || this.state.loadingHistory){
+            return(
+                <LoadingPage/>
+            )
+        }
+        var historyView=()=>{
+            if(this.state.history.length>0){
+                return(
+                    <small className="d-block text-right mt-3">
+                                  <Link to="/history-ads">View All</Link>
+                            </small>
+                )
+            }
+        }
+        var ongoingView=()=>{
+            if(this.state.ongoing.length>0){
+                return(
+                    <small className="d-block text-right mt-3">
+                                  <Link to="/ongoing-ads">View All</Link>
+                            </small>
+                )
+            }
+        }
         return (
             <div className="pt-4 container">
                 <div className="row">
@@ -145,9 +174,7 @@ class BusinessPage extends Component {
                                 {this.onGoingMapData()}
                             </MDBTableBody>
                             </MDBTable>
-                            <small className="d-block text-right mt-3">
-                                  <Link to="/ongoing-ads">View All</Link>
-                            </small>
+                            {ongoingView()}
                          </div>
                     </div>
                     <div className="col-md-12">
@@ -167,9 +194,7 @@ class BusinessPage extends Component {
                                 {this.historyMapData()}
                             </MDBTableBody>
                             </MDBTable>
-                            <small className="d-block text-right mt-3">
-                                  <Link to="/history-ads">View All</Link>
-                            </small>
+                            {historyView()}
                          </div>
                     </div>
                 </div>

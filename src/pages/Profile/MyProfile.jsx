@@ -363,6 +363,7 @@ class MyProfile extends Component {
                                         <div>
                                             <MDBIcon icon="dollar-sign" />
                                             <span className='ml-2'>Avg. Price = {price ? Math.round((JSON.parse(price).feed +  JSON.parse(price).story  + JSON.parse(price).both)/3)  : '-'} / Item</span>
+                                            
                                         </div>
                                     </div>
                                 </div>
