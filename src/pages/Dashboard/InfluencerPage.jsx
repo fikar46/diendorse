@@ -146,7 +146,7 @@ class InfluencerPage extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-8">
+                    {/* <div className="col-md-8">
                         {this.createAds()}
                         <div className="mb-3 p-3 bg-white rounded shadow-sm">
                         <p className="font-weight-bold pt-3">Endorse Income</p>
@@ -169,8 +169,8 @@ class InfluencerPage extends Component {
                                   <Link to="/ongoing-ads">View All</Link>
                             </small>
                          </div>
-                    </div>
-                    <div className="col-md-6">
+                    </div> */}
+                    <div className="col-md-8">
                         <div className="mb-3 p-3 bg-white rounded shadow-sm">
                         <p className="font-weight-bold pt-3">On Going</p>
                         <MDBTable hover>
@@ -191,7 +191,7 @@ class InfluencerPage extends Component {
                             </small>
                          </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-12">
                         <div className="mb-3 p-3 bg-white rounded shadow-sm">
                         <p className="font-weight-bold pt-3">History</p>
                         <MDBTable hover>

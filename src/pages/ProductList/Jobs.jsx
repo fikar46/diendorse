@@ -116,7 +116,6 @@ class productList extends Component {
                     loading : false
                 }
             })
-            console.log(res.data)
             this.setState({data : data , filteredData : data,limit : limit,loading : false})
         })
     }
@@ -151,6 +150,17 @@ class productList extends Component {
         }else{
             this.setState({categories : this.state.categories.filter((val) => val !== e.target.value)})
         }
+    }
+    bidNow=(id_ads)=>{
+        Axios.post(`${koneksi}/project/bid-now`,{
+            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0
+        },getHeaderAuth()).then((res)=>{
+            window.location="/dashboard"
+        }).catch((err)=>{
+            if(err.response.status == 409){
+                alert(err.response.data.message)
+            }
+        })
     }
 
     renderData = () => {
@@ -195,7 +205,7 @@ class productList extends Component {
                                     {val.days} Day <br/>
                                     0 Bids 
                                 </MDBCardText>
-                                <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}}>Bid Now</MDBBtn>
+                                <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=>this.bidNow(val.id)}>Bid Now</MDBBtn>
                             </div>
                         </div>
                     </MDBCardBody>
