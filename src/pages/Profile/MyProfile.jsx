@@ -9,6 +9,7 @@ import LoadingPage from './../../components/LoadingPage'
 import Swal from 'sweetalert2';
 import { localStorageKey } from '../../helper/constant';
 import {onRegisterSuccess} from './../../redux/actions'
+import { formatRupiah } from '../../helper/functions';
 
 const apiUrl = 'https://x.rajaapi.com/MeP7c5ne'
 function mapStateToProps(state) {
@@ -359,10 +360,13 @@ class MyProfile extends Component {
                                 <div className='col-md-4'>
                                     <img src='https://storage.siapptn.com/image/ava/avatar.png' width='100%'>
                                     </img>
-                                    <div style={{backgroundColor:'#4fb55d',color:"white",textAlign:'center'}} className='p-2'>
-                                        <div>
-                                            <MDBIcon icon="dollar-sign" />
-                                            <span className='ml-2'>Avg. Price = {price ? Math.round((JSON.parse(price).feed +  JSON.parse(price).story  + JSON.parse(price).both)/3)  : '-'} / Item</span>
+                                    <div style={{color:"grey",textAlign:'left'}} className='p-2'>
+                                        <div className="ml-2">
+                                            {/* <MDBIcon icon="dollar-sign" /> */}
+                    <small className='ml-2'>Instagram Post = {formatRupiah( String(JSON.parse(price).feed) , 'Rp')}</small>
+                    <small className='ml-2'>Instagram Story = {formatRupiah( String(JSON.parse(price).story) , 'Rp')}</small> 
+                    <small className='ml-2'>Both = {formatRupiah( String(JSON.parse(price).both) , 'Rp')}</small>
+                    
                                             
                                         </div>
                                     </div>

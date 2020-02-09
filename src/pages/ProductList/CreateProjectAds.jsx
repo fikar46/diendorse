@@ -55,6 +55,7 @@ class CreateProjectAds extends Component {
       var description = this.refs.description.value;
       var min = this.refs.min.value;
       var max = this.refs.max.value;
+      var days = this.refs.days.value;
       var id_user = this.props.user.id;
       if(category == "x"){
         var ect_category=this.refs.ect_category.value;
@@ -71,11 +72,13 @@ class CreateProjectAds extends Component {
       }else{
         status = true
       }
-      if(this.state.priceMin>=50000){
-          if(this.state.priceMax > this.state.priceMin){
-            if(status){
+      if(status){
+      if(days>0){
+        if(this.state.priceMin>=50000){
+          if(Number(this.state.priceMax) > Number(this.state.priceMin)){
+            
               Axios.post(`${koneksi}/project/create-ads`,{
-                id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads
+                id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads,days
               },getHeaderAuth()).then((res)=>{
                   Swal.fire(
                     'Project disimpan',
@@ -91,15 +94,26 @@ class CreateProjectAds extends Component {
                   console.log(err)
                   this.setState({loading:false})
               })
+          
           }else{
-              alert("Form wajib diisi semua.")
-          }
-          }else{
-            alert("Price must be higher than min price")
+            this.setState({loading:false})
+            alert("Price max must be higher than min price")
           }
     }else{
-      alert("Price must be more than or equal Rp 50.000")
+
+      console.log(this.state.priceMin,this.state.priceMax)
+      this.setState({loading:false})
+      alert("Price min must be more than or equal Rp 50.000")
     }
+      }else{
+        this.setState({loading:false})
+        alert("Minimum days is 1")
+      }
+    }else{
+      this.setState({loading:false})
+        alert("All forms must be filled.")
+    }
+     
       
     }
     renderButton=()=>{
@@ -229,9 +243,9 @@ return(
                                 <br />
                                 {this.openEtcCategory()}
                                 <label htmlFor="description" className="black-text">
-                                Description ads
+                                Description ads <br></br><small style={{color:"grey"}}>Describe what you want to convey to influencers about your desire for your ad, such as conveying the contents of the Instagram post caption</small>
                                 </label>
-                                <textarea type="text" id="description" className="form-control" rows="9" ref="description" placeholder="Input your ads description"/>
+                                <textarea type="text" id="description" className="form-control" rows="9" ref="description" placeholder="Input your ads description" defaultValue="saya ingin influencer memposting foto untuk berada di feed mereka agar iklan saya bisa dilihat oleh followers mereka dan dengan caption seperti berikut..."/>
                                 <br />
                                 <label htmlFor="uploadFile" className="black-text">
                                 Upload file for support your description<br/>
@@ -324,6 +338,11 @@ return(
                                 </div>
                                 <br/>
                                 <br/>
+                                <label htmlFor="days" className="black-text">
+                                how long do you want your ad on feed? (Only post)
+                                </label>
+                                <input type="number" id="days" className="form-control col-2" ref="product_name" placeholder="How many days" defaultValue="1" ref="days"/>
+                                <br />
                                 <label htmlFor="estimated" className="black-text">
                                 Estimated price of advertising
                                 </label>
