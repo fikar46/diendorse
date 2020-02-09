@@ -9,7 +9,9 @@ import {getHeaderAuth} from '../../helper/service'
 import Swal from 'sweetalert2';
 import { localStorageKey } from '../../helper/constant';
 import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import LoadingPage from '../../components/LoadingPage';
 
+const apiUrl = 'https://x.rajaapi.com/MeP7c5ne'
 
 class CreateProjectAds extends Component {
     state = {
@@ -24,10 +26,33 @@ class CreateProjectAds extends Component {
         priceMin:0,
         priceMax:1,
         fileUpload:[],
-        loadUpload:false
+        loadUpload:false,
+        provinsi : [],
+        kabupaten : [],
+        kecamatan : []
       }
     componentDidMount(){
       this.getCategoryAds()
+      this.getDataProvinsi()
+    }
+
+    getDataProvinsi = () => {
+      Axios.get('https://x.rajaapi.com/poe')
+        .then((res) => {
+            if(res.data.success){
+                this.setState({token : res.data.token})
+                Axios.get(`https://x.rajaapi.com/MeP7c5ne${res.data.token}/m/wilayah/provinsi`)
+                .then((resData) => {
+                    this.setState({provinsi : resData.data.data})
+                })
+                .catch((err) => {
+                  console.log(err)
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
     getCategoryAds=()=>{
       Axios.get(`${koneksi}/project/category-ads`,getHeaderAuth())
@@ -51,7 +76,7 @@ class CreateProjectAds extends Component {
     buttonSubmit=()=>{
       this.setState({loading:true})
       var product_name = this.refs.product_name.value;
-      var {upload_at,category,location_ads,sex_ads,value} = this.state;
+      var {upload_at,category,sex_ads,value} = this.state;
       var description = this.refs.description.value;
       var min = this.refs.min.value;
       var max = this.refs.max.value;
@@ -66,7 +91,16 @@ class CreateProjectAds extends Component {
       var estimation_ads = JSON.stringify({min,max})
       var age_ads = JSON.stringify(value)
       var status;
-      
+      if(this.refs.prov.value != 0 || this.refs.kab.value != 0 || this.refs.kec.value !=0){
+        var location_ads = {
+            prov : this.state.provinsi.filter((val) => val.id == this.refs.prov.value)[0].name,
+            kab : this.state.kabupaten.filter((val) => val.id == this.refs.kab.value)[0].name,
+            kec : this.state.kecamatan.filter((val) => val.id == this.refs.kec.value)[0].name
+        }
+      }else{
+        return alert('Location Harus Dipilih')
+      }
+
       if(product_name == ""&&category==""&&ect_category==""&&file==""&&upload_at==""&&location_ads==""&&sex_ads==""&&age_ads==""&&description==""&&estimation_ads==""){  
          status = false
       }else{
@@ -78,7 +112,7 @@ class CreateProjectAds extends Component {
           if(Number(this.state.priceMax) > Number(this.state.priceMin)){
             
               Axios.post(`${koneksi}/project/create-ads`,{
-                id_user,product_name,category,ect_category,file,upload_at,location_ads,sex_ads,age_ads,description,estimation_ads,days
+                id_user,product_name,category,ect_category,file,upload_at,location_ads : JSON.stringify(location_ads),sex_ads,age_ads,description,estimation_ads,days
               },getHeaderAuth()).then((res)=>{
                   Swal.fire(
                     'Project disimpan',
@@ -220,7 +254,49 @@ return(
        
       }
     }
+
+    onChangeProvHandler = (event) => {
+      this.setState({loadingKabupaten : true , kabupaten : [] , kecamatan : []})
+      this.refs.kab.value = 0
+      Axios.get(`${apiUrl}${this.state.token}/m/wilayah/kabupaten?idpropinsi=${event.target.value}`)
+      .then((res) => {
+          if(res.data.success){
+              this.setState({kabupaten : res.data.data , loadingKabupaten : false})
+          }
+      })
+      .catch((err) => {
+          this.setState({modalOpen : true, error : "Pastikan Perangkat Anda Terhubung dengan Internet"})
+      })
+  }
+
+  onChangeKabHandler = (event) => {
+      this.setState({loadingKecamatan : true ,kecamatan : []})
+      this.refs.kec.value = 0
+      Axios.get(`${apiUrl}${this.state.token}/m/wilayah/kecamatan?idkabupaten=${event.target.value}`)
+      .then((res) => {
+          if(res.data.success){
+              this.setState({kecamatan : res.data.data , loadingKecamatan : false})
+          }
+      })
+      .catch((err) => {
+          this.setState({modalOpen : true, error : "Pastikan Perangkat Anda Terhubung dengan Internet"})
+      })
+  }
+  renderOption = (state) => {
+    var jsx =  state.map((val) => {
+        return(
+            <option key={val.id}  value={val.id} > {val.name} </option>
+        )
+    })
+    return jsx
+}
+
     render() {
+      if(this.state.provinsi.length == 0){
+        return(
+          <LoadingPage/>
+        )
+      }
         return (
             <div className=" pt-5">
                     <MDBContainer>
@@ -290,12 +366,28 @@ return(
                                 Audience location goals
                                 </label>
                                 <br/>
-                                <select className="form-control col-3" onChange={this.locationAds}>
+                                <div className='row mx-2 mx-md-0'>
+                                  <select className='form-control col-4 col-md-3' ref='prov' defaultValue={0} onChange={this.onChangeProvHandler}>
+                                      <option value={0} disabled> {this.state.provinsi.length > 0 ? 'Pilih Provinsi' : 'loading ...'} </option>
+                                      {this.renderOption(this.state.provinsi)}
+                                  </select>
+
+                                  <select className='form-control col-4 col-md-3 mx-md-3' ref='kab' defaultValue={0} onChange={this.onChangeKabHandler} >
+                                      <option value={0} disabled>{this.state.loadingKabupaten ? 'loading ...' : 'Pilih Kabupaten'}</option>
+                                      {this.renderOption(this.state.kabupaten)}
+                                  </select>
+
+                                  <select className='form-control col-md-3 col-4' ref='kec'  defaultValue={0}>
+                                      <option value={0}>{this.state.loadingKecamatan ? 'loading...' : 'Pilih Kecamatan'}</option>
+                                      {this.renderOption(this.state.kecamatan)}
+                                  </select>
+                              </div>
+                                {/* <select className="form-control col-3" onChange={this.locationAds}>
                                     <option value="">Pilih Lokasi</option>
                                     <option value="1">Se-Indonesia</option>
                                     <option value="2">Banten</option>
                                     <option value="x">Dki Jakarta</option>
-                                </select>
+                                </select> */}
                                 <br />
                                 <label htmlFor="gender" className="black-text">
                                 Audience gender goal
