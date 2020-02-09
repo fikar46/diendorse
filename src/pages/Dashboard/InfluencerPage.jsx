@@ -7,13 +7,21 @@ import { koneksi } from '../../environment';
 import {getHeaderAuth} from '../../helper/service'
 class InfluencerPage extends Component {
     state={
-        endroseIncome:[],
+        onbidding:[],
         history:[],
         ongoing:[]
     }
     componentDidMount(){
         // this.getOngoingAds()
         // this.getHistoryAds()
+        this.getOnbiddingAds()
+    }
+    getOnbiddingAds=()=>{
+        Axios.get(`${koneksi}/project/get-onbidding-by-id/${this.props.user.id}`,getHeaderAuth())
+        .then((res)=>{
+            console.log(res.data)
+            this.setState({onbidding:res.data})
+        })
     }
     getOngoingAds=()=>{
         Axios.get(`${koneksi}/project/get-ongoing-ads/${this.props.user.id}`,getHeaderAuth())
@@ -68,15 +76,15 @@ class InfluencerPage extends Component {
             )
        }
     }
-    onGoingMapData=()=>{
+    onBiddingMapData=()=>{
         
-        if(this.state.ongoing.length>0){
-         var data = this.state.ongoing.map((item)=>{
+        if(this.state.onbidding.length>0){
+         var data = this.state.onbidding.map((item)=>{
              var status;
-             if(item.status_ads == 5){
-                 status = "Done"
+             if(item.status_bidding == 0){
+                 status = "Pending"
              }
-             var date = new Date(item.created_ads)
+             var date = new Date(item.createdAt)
              date.setHours(date.getHours()+8)
              var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
              return(
@@ -84,7 +92,6 @@ class InfluencerPage extends Component {
                      <td>{item.product_name}</td>
                      <td>{date.getDate()} {months[date.getMonth()]} {date.getFullYear()}</td>
                      <td>{status}</td>
-                     <td>0 Bidding</td>
                      <td><Link to={`/ongoing-ads?ads=${item.id}`}><MDBIcon icon="chevron-right" /></Link></td>
                  </tr>
              )
@@ -93,7 +100,7 @@ class InfluencerPage extends Component {
         }else{
             return(
                 <tr>
-                    <td colSpan="4" className="text-center">No Data</td>
+                    <td colSpan="4" className="text-center">No Bidding</td>
                 </tr>
             )
         }
@@ -130,6 +137,15 @@ class InfluencerPage extends Component {
      }
     
     render() {
+        var onBidding =()=>{
+            if(this.state.onbidding.length>0){
+                return(
+                    <small className="d-block text-right mt-3">
+                                      <Link to="/on-bidding">View All</Link>
+                                </small>
+                )
+            }
+        }
         return (
             <div className="pt-4 container">
                 <div className="row">
@@ -172,13 +188,32 @@ class InfluencerPage extends Component {
                     </div> */}
                     <div className="col-md-8">
                         <div className="mb-3 p-3 bg-white rounded shadow-sm">
-                        <p className="font-weight-bold pt-3">On Going</p>
+                        <p className="font-weight-bold pt-3">On Bidding</p>
                         <MDBTable hover>
                             <MDBTableHead style={{}}>
                                 <tr>
                                     <th>Product</th>
                                     <th>Owner</th>
                                     <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </MDBTableHead>
+                            <MDBTableBody>
+                                {this.onBiddingMapData()}
+                            </MDBTableBody>
+                            </MDBTable>
+                            {onBidding()}
+                         </div>
+                    </div>
+                    <div className="col-md-12">
+                        <div className="mb-3 p-3 bg-white rounded shadow-sm">
+                        <p className="font-weight-bold pt-3">On Going</p>
+                        <MDBTable hover>
+                            <MDBTableHead style={{}}>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Date created</th>
+                                    <th>Owner</th>
                                     <th></th>
                                 </tr>
                             </MDBTableHead>
