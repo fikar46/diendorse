@@ -8,6 +8,7 @@ import moment from 'moment'
 import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
 import { formatRupiah } from '../../helper/functions';
+import Swal from 'sweetalert2';
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -155,7 +156,15 @@ class productList extends Component {
         Axios.post(`${koneksi}/project/bid-now`,{
             id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0
         },getHeaderAuth()).then((res)=>{
-            window.location="/dashboard"
+            Swal.fire(
+                'Iklan berhasil dibid',
+                'Status bid berada di dashboard!',
+                'success'
+              ).then((result)=>{
+                if(result.value){
+                  window.location="/dashboard"
+                }
+              })
         }).catch((err)=>{
             if(err.response.status == 409){
                 alert(err.response.data.message)
