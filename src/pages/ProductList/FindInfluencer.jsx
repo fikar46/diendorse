@@ -73,7 +73,7 @@ class productList extends Component {
 
     getData =(limit,dataFilered) => {
         // this.setState({loading : true})
-        Axios.post(koneksi + '/influencer/getallinfluencer?limit=' + limit,dataFilered,getHeaderAuth())
+        Axios.post(koneksi + '/influencer/getallinfluencer?limit=' + limit,dataFilered)
         .then((res) => {
             console.log(res.data.data)
             if(!res.data.error){

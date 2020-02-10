@@ -83,7 +83,7 @@ class OnBiddingComponent extends Component {
                     <td>{item.username_ig}</td>
                     <td>{item.followers_ig}</td>
                     <td>{item.engagement_ig}</td>
-                    <td>{place.kec},{place.kab},{place.prov}</td>
+                    <td>{ place.kec},{place.kab},{place.prov}</td>
                     <td>{ formatRupiah(String(item.price) , 'Rp')}</td>
                     <td><button style={{fontSize:'12px',padding:'10px',textTransform:'capitalize'}} onClick={() => this.CancelClick(item.id_biding,0)} className="btn btn-danger">Cancel</button></td>
                 </tr>
@@ -111,7 +111,7 @@ class OnBiddingComponent extends Component {
                         <td>{item.username_ig}</td>
                         <td>{item.followers_ig}</td>
                         <td>{item.engagement_ig}</td>
-                        <td>{place.kec},{place.kab},{place.prov}</td>
+                        {/* <td>{place ? place.kec : null},{place.kab?  place.kab : null},{place.prov ? place.prov : null}</td> */}
                         <td>{ formatRupiah(String(item.price) , 'Rp')}</td>
                         <td><button style={{fontSize:'12px',padding:'10px',textTransform:'capitalize'}} onClick={() => this.onAcceptBtnClick(item.id_biding,3)} className="btn btn-danger">reject</button></td>
                         <td><button style={{fontSize:'12px',padding:'10px',textTransform:'capitalize'}} onClick={() => this.onAcceptBtnClick(item.id_biding,1)} className="btn btn-success">Accept</button></td>

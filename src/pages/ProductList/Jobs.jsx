@@ -78,7 +78,7 @@ class productList extends Component {
     
 
     getDataCategory = () => {
-        Axios.get(koneksi + '/project/get-all-category',getHeaderAuth())
+        Axios.get(koneksi + '/project/get-all-category')
         .then((res) => {
             if(!res.data.error){
                 this.setState({dataCategory : res.data.data})
@@ -86,7 +86,7 @@ class productList extends Component {
         })
     }
     getDataKabupaten = () => {
-        Axios.get(koneksi + '/project/get-all-kabupaten',getHeaderAuth())
+        Axios.get(koneksi + '/project/get-all-kabupaten')
         .then((res) => {
             if(!res.data.error){
                 this.setState({kabupaten : res.data.data})
@@ -99,11 +99,11 @@ class productList extends Component {
 
     getData =(limit,dataFilered) => {
         this.setState({loading : true})
-        Axios.get(koneksi + '/project/get-all-bids',getHeaderAuth())
+        Axios.get(koneksi + '/project/get-all-bids')
         .then((bids) => {
             console.log(bids)
             if(!bids.data.error){
-                Axios.post(koneksi + '/project/get-all-ads-ongoing?limit=' + limit,dataFilered,getHeaderAuth())
+                Axios.post(koneksi + '/project/get-all-ads-ongoing?limit=' + limit,dataFilered)
                 .then((res) => {
                     let data;
                     data = res.data.data.map((val) => {

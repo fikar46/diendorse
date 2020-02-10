@@ -20,9 +20,9 @@ class LandingPage extends Component {
             <h3 style={{paddingLeft: '1rem',fontSize:'20px',color:'#9f9f9f'}}>Are you influencer? or you have a business? </h3>
             <h3 style={{paddingLeft: '1rem',fontSize:'20px',color:'#9f9f9f'}}> Accelerate your product now!</h3>
             <br />
-            <MDBBtn color='#F29C13' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '10px',textTransform:'capitalize',backgroundColor : "#2E9DFF" , color: "white"}}>Find Influencer </MDBBtn>            
+            <MDBBtn href='/find-influencer' color='#F29C13' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '10px',textTransform:'capitalize',backgroundColor : "#2E9DFF" , color: "white"}}>Find Influencer </MDBBtn>            
             {/* <a href="#" className="btn btn-primary" style={{paddingLeft: '1rem', marginLeft: '10px'}}>Find Influencer </a> */}
-            <MDBBtn color='#F29C13' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '20px',textTransform:'capitalize',backgroundColor : "#F29C13" , color: "white"}}>Find Project </MDBBtn>
+            <MDBBtn href='/find-business' color='#F29C13' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '20px',textTransform:'capitalize',backgroundColor : "#F29C13" , color: "white"}}>Find Project </MDBBtn>
           </div>
           <div className="col-md-6">
             <br />

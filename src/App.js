@@ -21,6 +21,7 @@ import HistoryBusiness from './pages/Dashboard/business/History'
 import ProjectDetail from './pages/ProductList/JobDetail'
 import UserProfile from './pages/Profile/userProfile'
 import PaymentPage from './pages/Transaction/Index'
+import Footer from './components/Footer'
 
 class App extends Component {
   state = {
@@ -69,6 +70,7 @@ class App extends Component {
             <Route path="*" component={PageNotFound} />
           </Switch>
         }
+        <Footer/>
       </div>
     )
   }
