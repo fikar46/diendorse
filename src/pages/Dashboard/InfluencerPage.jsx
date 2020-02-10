@@ -82,7 +82,7 @@ class InfluencerPage extends Component {
         if(this.state.onbidding.length>0){
          var data = this.state.onbidding.map((item)=>{
              var status;
-             if(item.status_bidding == 0){
+             if(item.status_bidding <2 ){
                  status = "Pending"
              }
              var date = new Date(item.createdAt)

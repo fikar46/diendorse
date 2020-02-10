@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardTitle, MDBCardText,MDBBtn, MDBCardFooter,MDBRow,MDBCol,MDBPagination,MDBPageItem,MDBPageNav} from 'mdbreact'
+import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardTitle, MDBCardText,MDBBtn,MDBModalHeader,MDBModalBody,MDBModalFooter, MDBCardFooter,MDBRow,MDBCol,MDBPagination,MDBPageItem,MDBPageNav, MDBModal} from 'mdbreact'
 import { LoremIpsum } from "lorem-ipsum";
 import {connect} from 'react-redux'
 import LoadingPage from './../../components/LoadingPage'
@@ -60,7 +60,12 @@ class productList extends Component {
             {nama : "Bandung"},
             {nama : "Semarang"},
             {nama : "Surabaya"},
-        ]
+        ],
+        openFile : false,
+        priceLimit : null,
+        putPrice : "",
+        id_selected : null
+
     }
 
 
@@ -116,7 +121,7 @@ class productList extends Component {
                     status_ads : val.status_ads,
                     upload_at : val.upload_at,
                     days : val.days,
-                    loading : false
+                    loading : false,
                 }
             })
             this.setState({data : data , filteredData : data,limit : limit,loading : false})
@@ -155,8 +160,11 @@ class productList extends Component {
         }
     }
     bidNow=(id_ads)=>{
+        if(this.state.putPrice > this.state.priceLimit[1] || this.state.putPrice < this.state.priceLimit[0]){
+            return Swal.fire('Error','Your price out of Limit','error')
+        }
         Axios.post(`${koneksi}/project/bid-now`,{
-            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0
+            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0,price : this.state.putPrice
         },getHeaderAuth()).then((res)=>{
             Swal.fire(
                 'Iklan berhasil dibid',
@@ -172,6 +180,9 @@ class productList extends Component {
                 alert(err.response.data.message)
             }
         })
+    }
+    togglePrice = () => {
+        this.setState({openFile : !this.state.openFile,id_selected : null,putPrice: null,priceLimit : null})
     }
 
     renderData = () => {
@@ -218,7 +229,7 @@ class productList extends Component {
                                     {val.days} Day <br/>
                                     0 Bids 
                                 </MDBCardText>
-                                <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=>this.bidNow(val.id)}>Bid Now</MDBBtn>
+                                <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=> this.setState({openFile : true,priceLimit : [val.priceFrom,val.priceTo] , id_selected : val.id})}>Bid Now</MDBBtn>
                                 <Link to={'/project-detail/' + val.id} >
                                     <MDBBtn color='yellow' style={{padding:'10px',margin: '0px',}}>See Detail</MDBBtn>
                                 </Link>
@@ -238,7 +249,26 @@ class productList extends Component {
         var {priceFrom,priceTo,locations,categories,minInstagram,minEngagementRate} = this.state
 
         return (
+            
             <div className='container-fluid pt-5 pb-5'>
+                {/* ====================+ MODAL HARGA =========================== */}
+
+                <MDBModal isOpen={this.state.openFile} toggle={this.togglePrice}>
+                    <MDBModalHeader toggle={this.togglePrice}>Put Your Price</MDBModalHeader>
+                    <MDBModalBody>
+                        <input onChange={this.onChangeHandler} value={this.state.putPrice} name='putPrice' type="number" placeholder={`Put Your Price From ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[0]) : null} - ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[1]) : null}`} ref='price' className='form-control'/>
+                    </MDBModalBody>
+                    <MDBModalFooter>
+                        <MDBBtn onClick={() =>  this.bidNow (this.state.id_selected !== null ? this.state.id_selected : null)}>Bid</MDBBtn>
+                        <MDBBtn onClick={this.togglePrice}>Cancel</MDBBtn>
+                    </MDBModalFooter>
+                </MDBModal>
+
+
+
+
+
+                {/* ====================+ MODAL HARGA =========================== */}
                 <h1 className='container'>Find Jobs</h1>
                 <div className='container'>
                     <div className='row'>
