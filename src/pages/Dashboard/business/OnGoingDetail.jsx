@@ -17,7 +17,7 @@ class OnGoingDetail extends Component {
             id_project:this.props.id_project,id_user:this.props.user.id
         },getHeaderAuth()).then((res)=>{
             this.setState({detail:res.data[0]})
-            console.log(this.state.detail)
+            // console.log(this.state.detail)
         }).catch((err)=>{
             console.log(err)
         })
@@ -33,7 +33,7 @@ class OnGoingDetail extends Component {
         }
         var page =()=>{
             if(status_ads == 0){
-                return <OnBiddingComponent/>
+                return <OnBiddingComponent id_project={this.props.id_project}/>
             }
         }
         return (

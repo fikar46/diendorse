@@ -19,8 +19,9 @@ class InfluencerPage extends Component {
     getOnbiddingAds=()=>{
         Axios.get(`${koneksi}/project/get-onbidding-by-id/${this.props.user.id}`,getHeaderAuth())
         .then((res)=>{
-            console.log(res.data)
             this.setState({onbidding:res.data})
+        }).catch((err)=>{
+            console.log(err)
         })
     }
     getOngoingAds=()=>{
@@ -92,7 +93,7 @@ class InfluencerPage extends Component {
                      <td>{item.product_name}</td>
                      <td>{date.getDate()} {months[date.getMonth()]} {date.getFullYear()}</td>
                      <td>{status}</td>
-                     <td><Link to={`/ongoing-ads?ads=${item.id}`}><MDBIcon icon="chevron-right" /></Link></td>
+                     <td><Link to={`/project-detail/${item.id}`}><MDBIcon icon="chevron-right" /></Link></td>
                  </tr>
              )
          })

@@ -77,7 +77,7 @@ class Login extends Component {
     render() {
         if(this.props.user != null){
             if(this.props.user.role == 'business'){
-                return <Redirect to='/find-influencer' />
+                return <Redirect to='/dashboard' />
             }else if(this.props.user.role == 'influencer'){
                 return <Redirect to='/find-business' />
             }else if(this.props.user.role == 'admin'){
