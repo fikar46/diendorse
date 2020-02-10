@@ -53,9 +53,11 @@ render() {
 
   if(this.props.user !== null){
     return (
+      
       <MDBNavbar color="white" light expand="md" className='px-5'>
         <MDBNavbarBrand href='/dashboard' style={{cursor:'pointer'}}>
-          <strong className="black-text">Diendorse</strong>
+          {/* <strong className="black-text">Diendorse</strong> */}
+          <img src={Logo} style={{height: '61,95px', width: '130px'}} />
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={this.toggleCollapse} />
         <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>

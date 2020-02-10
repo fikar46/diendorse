@@ -4,6 +4,7 @@ import { koneksi } from '../../../environment'
 import { getHeaderAuth } from '../../../helper/service'
 import { connect } from 'react-redux'
 import OnBiddingComponent from './component/OnBiddingComponent'
+import OnReview from './OnReview'
 
 class OnGoingDetail extends Component {
     state={
@@ -11,12 +12,24 @@ class OnGoingDetail extends Component {
     }
     componentDidMount(){
         this.getDataOngoingDetail()
+        this.getDataTransaksi()
     }
     getDataOngoingDetail=()=>{
         Axios.post(`${koneksi}/project/get-ongoing-ads-detail`,{
             id_project:this.props.id_project,id_user:this.props.user.id
         },getHeaderAuth()).then((res)=>{
             this.setState({detail:res.data[0]})
+            // console.log(this.state.detail)
+        }).catch((err)=>{
+            console.log(err)
+        })
+    }
+    getDataTransaksi=()=>{
+        Axios.post(`${koneksi}/payment/get-transaksi-by-id`,{
+            id_project:this.props.id_project,id_user:this.props.user.id
+        },getHeaderAuth()).then((res)=>{
+            console.log(res.data)
+            
             // console.log(this.state.detail)
         }).catch((err)=>{
             console.log(err)
@@ -34,6 +47,8 @@ class OnGoingDetail extends Component {
         var page =()=>{
             if(status_ads == 0){
                 return <OnBiddingComponent id_project={this.props.id_project}/>
+            }else if(status_ads == 2){
+                return <OnReview id_project={this.props.id_project}/>
             }
         }
         return (
