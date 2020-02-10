@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {MDBInput,MDBBtn,MDBCard,MDBCardBody} from 'mdbreact'
 import Axios from "axios";
 import {koneksi} from "../../environment"
+import img_1 from '../../support/assets/images/signUp/Asset1.png'
 class SignUp extends Component {
     state={
         fullname:"",
@@ -75,9 +76,16 @@ class SignUp extends Component {
     render() {
         return (
             <div className='container'>
-                <div className='row justify-content-center py-5'>
-                    <MDBCard className='col-md-4'>
-                        <MDBCardBody>
+                <div className="row" style={{height:"100%"}}>
+                    <div className="col bg-col-left">
+                    <div className="row justify-content-center py-5 ">
+                    <img src={img_1} alt="" style={{width: '600px', height: '400px'}} />
+                    </div>
+                    </div>
+                    <div className="col bg-col-right">
+                        <div className="row justify-content-center py-5 ">
+                        <MDBCard className='col-md-8' style={{borderRadius:"20px"}}>
+                            <MDBCardBody>
                             <form
                              onSubmit={this.submitHandler}
                              noValidate>
@@ -137,7 +145,7 @@ class SignUp extends Component {
                                 </div>
                                 <div className="text-center">
                                     {this.errorForm()}
-                                <MDBBtn color="primary" type="submit">
+                                <MDBBtn color='#2E9DFF' style={{backgroundColor : "#2E9DFF" , color: "white", borderRadius:'100px'}} type="submit" >
                                 {
                                     this.state.loading ? 
                                         <div  style={{color:"white"}} className="spinner-border mx-4" role="status">
@@ -150,8 +158,12 @@ class SignUp extends Component {
                                 </div>
                                 
                             </form>
-                        </MDBCardBody>
-                    </MDBCard>
+                            </MDBCardBody>
+                        </MDBCard>
+
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
         );
