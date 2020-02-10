@@ -363,10 +363,9 @@ class MyProfile extends Component {
                                     <div style={{color:"grey",textAlign:'left'}} className='p-2'>
                                         <div className="ml-2">
                                             {/* <MDBIcon icon="dollar-sign" /> */}
-                    <small className='ml-2'>Instagram Post = {formatRupiah( String(JSON.parse(price).feed) , 'Rp')}</small>
-                    <small className='ml-2'>Instagram Story = {formatRupiah( String(JSON.parse(price).story) , 'Rp')}</small> 
-                    <small className='ml-2'>Both = {formatRupiah( String(JSON.parse(price).both) , 'Rp')}</small>
-                    
+                                                <small>Instagram Post = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).feed) , 'Rp')}</span></small><br/>
+                                                <small>Instagram Story = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).story) , 'Rp')}</span></small> <br/>
+                                                <small>Both = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).both) , 'Rp')}</span></small>
                                             
                                         </div>
                                     </div>

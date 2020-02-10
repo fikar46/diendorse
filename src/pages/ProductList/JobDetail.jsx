@@ -21,7 +21,8 @@ class JobDetail extends Component {
     state = {
         data : null,
         openFile : false,
-        selectedFile : null
+        selectedFile : null,
+        dataUserBidding : null,
     }
 
     componentDidMount(){
@@ -29,8 +30,18 @@ class JobDetail extends Component {
         var param = this.props.match.params
         // console.log(param)
         this.getData(param.id)
+        this.getDataUserBidding(param.id)
     }
 
+    getDataUserBidding = (id) => {
+        Axios.get(koneksi + '/project/get-data-bid-by-id-project/' + id,getHeaderAuth())
+        .then((res) => {
+            if(!res.data.error){
+                console.log(res.data.data)
+                this.setState({dataUserBidding : res.data.data})
+            }
+        })
+    }
     getData = (id) => {
         Axios.get(koneksi + '/project/get-project-ads-by-id/' + id , getHeaderAuth() )
         .then((res) => {
@@ -70,7 +81,7 @@ class JobDetail extends Component {
     }
 
     render() {
-        if(this.state.data === null){
+        if(this.state.data === null || this.state.dataUserBidding === null){
             return(
                 <LoadingPage />
             )
@@ -154,30 +165,39 @@ class JobDetail extends Component {
                                     <MDBTableHead>
                                         <tr>
                                         <th>#</th>
-                                        <th>First</th>
-                                        <th>Last</th>
-                                        <th>Handle</th>
+                                        <th>Fullname</th>
+                                        <th>Email</th>
+                                        <th>Username Ig</th>
+                                        <th>Follower Ig</th>
+                                        <th>Engagement Ig</th>
                                         </tr>
                                     </MDBTableHead>
                                     <MDBTableBody>
-                                        <tr>
-                                        <td>1</td>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                        <td>2</td>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                        <td>3</td>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                        </tr>
+                                       {
+                                           this.state.dataUserBidding.length > 0 ?
+                                           this.state.dataUserBidding.map((val,index) => {
+                                               return(
+                                                   <tr>
+                                                       <td>{index +1}</td>
+                                                       <td>{val.fullname}</td>
+                                                       <td>{val.email}</td>
+                                                       <td>{val.username_ig}</td>
+                                                       <td>{val.followers_ig}</td>
+                                                       <td>{val.engagement_ig}</td>
+                                                   </tr>
+                                               )
+                                           })
+                                           :
+                                           <tr>
+                                               <td colSpan={5}> No Data</td>
+                                               <td></td>
+                                               <td></td>
+                                               <td></td>
+                                               <td></td>
+                                               <td></td>
+
+                                           </tr>
+                                       }
                                     </MDBTableBody>
                                     </MDBTable>
                                 </div>

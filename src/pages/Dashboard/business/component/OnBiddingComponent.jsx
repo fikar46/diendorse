@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
-import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead, MDBBtn } from 'mdbreact';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import { koneksi } from '../../../../environment';
 import { getHeaderAuth } from '../../../../helper/service';
+import Swal from 'sweetalert2';
 
 
 
 class OnBiddingComponent extends Component {
     state={
-        onbidding:[]
+        onbidding:[],
+        influencers : []
     }
     componentDidMount(){
         this.getDataUserOnbidding()
+        this.getMyInfluencer()
     }
     getDataUserOnbidding=()=>{
         Axios.get(`${koneksi}/project/get-data-user-onbidding/${this.props.id_project}`,getHeaderAuth())
@@ -24,8 +27,29 @@ class OnBiddingComponent extends Component {
             console.log(err)
         })
     }
+    onAcceptBtnClick = (id,status) => {
+        Axios.post(`${koneksi}/project/update-ads-status`,{status,id : id},getHeaderAuth())
+        .then((res) => {
+            if(!res.data.error){
+                Swal.fire('Success',res.data.message,'success')
+                this.getDataUserOnbidding()
+            }
+        })
+    }
+
+    getMyInfluencer = (req,res) => {
+        Axios.post(`${koneksi}/project/get-data-id-with-status-and-id-ads`,{status : 1,id_ads : this.props.id_project},getHeaderAuth())
+        .then((res) => {
+            if(!res.data.error){
+                console.log(res.data.data)
+                this.setState({influencers : res.data.data})
+            }
+        })
+    }
+
     mapOnBidding=()=>{
         var data = this.state.onbidding.map((item,i)=>{
+            console.log(item.id_biding)
             var place = JSON.parse(item.place)
             return(
                 <tr>
@@ -35,8 +59,8 @@ class OnBiddingComponent extends Component {
                         <td>{item.followers_ig}</td>
                         <td>{item.engagement_ig}</td>
         <td>{place.kec},{place.kab},{place.prov}</td>
-                        <td><button className="btn btn-danger">reject</button></td>
-                        <td><button className="btn btn-success">Accept</button></td>
+                        <td><button onClick={() => this.onAcceptBtnClick(item.id_biding,3)} className="btn btn-danger">reject</button></td>
+                        <td><button onClick={() => this.onAcceptBtnClick(item.id_biding,1)} className="btn btn-success">Accept</button></td>
                     </tr>
             )
         })
