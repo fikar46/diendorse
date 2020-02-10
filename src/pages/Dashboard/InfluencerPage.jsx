@@ -81,6 +81,7 @@ class InfluencerPage extends Component {
         
         if(this.state.onbidding.length>0){
          var data = this.state.onbidding.map((item)=>{
+             console.log(item.status_bidding)
              var status;
              if(item.status_bidding <2 ){
                  status = "Pending"

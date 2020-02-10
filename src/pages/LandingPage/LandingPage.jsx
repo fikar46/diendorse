@@ -13,9 +13,9 @@ class LandingPage extends Component {
           <div className="col-md-6">
             <br />
             <br />
-            <h1 style={{fontSize:"48px" , color:'#4b4b4b'}}>Connect Influencer</h1> 
-            <h1 style={{fontSize:"48px" , color:'#4b4b4b'}}>And Small Business</h1>
-            <h1 style={{fontSize:"48px" , color:'#4b4b4b'}}>In One Click</h1>
+            <h1  style={{paddingLeft: '1rem',fontSize:"48px" , color:'#4b4b4b'}}>Connect Influencer</h1> 
+            <h1  style={{paddingLeft: '1rem',fontSize:"48px" , color:'#4b4b4b'}}>And Small Business</h1>
+            <h1  style={{paddingLeft: '1rem',fontSize:"48px" , color:'#4b4b4b'}}>In One Click</h1>
             <br />
             <h3 style={{paddingLeft: '1rem',fontSize:'20px',color:'#9f9f9f'}}>Are you influencer? or you have a business? </h3>
             <h3 style={{paddingLeft: '1rem',fontSize:'20px',color:'#9f9f9f'}}> Accelerate your product now!</h3>

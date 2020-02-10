@@ -1,18 +1,25 @@
 import React, { Component } from 'react'
-import { MDBTable, MDBTableBody, MDBTableHead, MDBBtn } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead, MDBBtn,MDBContainer, MDBModal, MDBModalBody, MDBModalHeader, MDBModalFooter,MDBListGroup, MDBListGroupItem} from 'mdbreact';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import { koneksi } from '../../../../environment';
 import { getHeaderAuth } from '../../../../helper/service';
 import Swal from 'sweetalert2';
-import queryString from 'querystring'
+import {formatRupiah} from './../../../../helper/functions'
+import { Link } from 'react-router-dom'
 
 
 class OnBiddingComponent extends Component {
     state={
         onbidding:[],
-        influencers : []
+        influencers : [],
+        modal: false
     }
+    toggle = () => {
+        this.setState({
+          modal: !this.state.modal
+        });
+      }      
     componentDidMount(){
         this.getDataUserOnbidding()
         this.getMyInfluencer()
@@ -20,7 +27,6 @@ class OnBiddingComponent extends Component {
     getDataUserOnbidding=()=>{
         Axios.get(`${koneksi}/project/get-data-user-onbidding/${this.props.id_project}`,getHeaderAuth())
         .then((res)=>{
-            console.log(res.data)
             this.setState({onbidding:res.data})
         }).catch((err)=>{
 
@@ -61,13 +67,9 @@ class OnBiddingComponent extends Component {
     renderAcceptedBidders =() => {
         if(this.state.influencers.length == 0){
             return(
-                <tr>
-                    <td colSpan={3}> No Data</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr className="text-center">
+                    <td colSpan={9}> No Data</td>
+                    
                 </tr>
             )
         }
@@ -89,22 +91,18 @@ class OnBiddingComponent extends Component {
 
         } )
     }
-
+    
     mapOnBidding=()=>{
         if(this.state.onbidding.length == 0){
             return(
                 <tr>
-                    <td colSpan={3}> No Data</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td colSpan={9}> No Data</td>
+                    
                 </tr>
             )
         }
         var data = this.state.onbidding.map((item,i)=>{
-            console.log(item.id_biding)
+            // console.log(item.id_biding)
             var place = JSON.parse(item.place)
             return(
                 <tr>
@@ -122,12 +120,27 @@ class OnBiddingComponent extends Component {
         })
         return data;
     }
+
+    renderTotalHarga = () => {
+        var total = 0
+        this.state.influencers.forEach((val) => {
+            total += val.price
+        })
+        return formatRupiah( String(total),'Rp') 
+    }
     checkOut=()=>{
-        Axios.post(`${koneksi}/payment/get-information`)
+        var total = 0
+        this.state.influencers.forEach((val) => {
+            total += val.price
+        })
+        Axios.post(`${koneksi}/payment/get-information`,{
+            user:this.props.user,amount:total,id_project:this.props.id_project
+        })
         .then((res)=>{
             console.log(res.data)
+            return window.location = `/payment?ads=${this.props.id_project}`
         }).catch((err)=>{
-            console.log(err)
+            console.log(err.response)
         })
     }
     render() {
@@ -179,12 +192,22 @@ class OnBiddingComponent extends Component {
                     Total Price {this.renderTotalHarga()}
                 </div>
                 <div className='text-center'>
-                    <MDBBtn color='blue'>Checkout Now</MDBBtn>                
+                    <MDBBtn color='blue' onClick={this.toggle}>Checkout Now</MDBBtn>                
                 </div>                
-
-               </div>
-               <div className="text-right">
-                   <button className="btn btn-success" onClick={this.checkOut}>Checkout</button>
+                <MDBContainer>
+                    <MDBModal isOpen={this.state.modal} toggle={this.toggle}>
+                        <MDBModalHeader toggle={this.toggle}>Choose payment</MDBModalHeader>
+                        <MDBModalBody>
+                        <MDBListGroup >
+                            <MDBListGroupItem onClick={this.checkOut} href="#">Briva</MDBListGroupItem>
+                        </MDBListGroup>
+                        </MDBModalBody>
+                            <MDBModalFooter>
+                            <MDBBtn color="secondary" onClick={this.toggle}>Close</MDBBtn>
+                            {/* <MDBBtn color="primary">Checkout</MDBBtn> */}
+                        </MDBModalFooter>
+                    </MDBModal>
+                </MDBContainer>
                </div>
             </div>
         )

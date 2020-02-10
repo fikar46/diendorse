@@ -20,6 +20,7 @@ import OnGoingBusiness from './pages/Dashboard/business/OnGoing'
 import HistoryBusiness from './pages/Dashboard/business/History'
 import ProjectDetail from './pages/ProductList/JobDetail'
 import UserProfile from './pages/Profile/userProfile'
+import PaymentPage from './pages/Transaction/Index'
 
 class App extends Component {
   state = {
@@ -64,6 +65,7 @@ class App extends Component {
             <Route exact path="/user-profile/:id" component={UserProfile}/>
             <Route exact path="/history-ads" component={HistoryBusiness}/>
             <Route exact path="/project-detail/:id" component={ProjectDetail}/>
+            <Route exact path="/payment" component={PaymentPage}/>
             <Route path="*" component={PageNotFound} />
           </Switch>
         }
