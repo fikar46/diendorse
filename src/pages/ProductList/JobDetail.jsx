@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardFooter, MDBCardTitle, MDBCardText,MDBTable,MDBTableHead,MDBTableBody, MDBBtn} from 'mdbreact'
+import {MDBCard,MDBCardBody,MDBCardHeader,MDBCardFooter, MDBCardTitle, MDBCardText,MDBTable,MDBTableHead,MDBTableBody, MDBBtn , MDBModal,MDBModalHeader,MDBModalFooter,MDBModalBody} from 'mdbreact'
 import Axios from 'axios';
 import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
 import LoadingPage from '../../components/LoadingPage';
 import moment from 'moment'
 import { formatRupiah } from '../../helper/functions';
+import Swal from 'sweetalert2'
 
 function mapStateToProps(state) {
     return {
@@ -18,7 +19,9 @@ function mapStateToProps(state) {
 
 class JobDetail extends Component {
     state = {
-        data : null
+        data : null,
+        openFile : false,
+        selectedFile : null
     }
 
     componentDidMount(){
@@ -38,26 +41,34 @@ class JobDetail extends Component {
             }
         })
     }
+    toggleFileModal = () => {
+        this.setState({openFile : !this.state.openFile})
+    }
 
-    /*
-ads_creator: "Petra Giles"
-age_ads: "{"min":45,"max":60}"
-category_name: "Food & Beverage"
-created_ads: "2020-05-05T12:25:54.000Z"
-days: 1
-description: "cursus, diam at pretium aliquet, metus urna convallis erat, eget"
-email_creator: "eget.nisi.dictum@Integer.net"
-estimation_ads: "{"min":"500","max":"1000"}"
-file: null
-id: 12
-id_user: 61
-location_ads: "{"prov":"JAWA TENGAH","kab":"KABUPATEN BANYUMAS","kec":"KEDUNG BANTENG"}"
-product_name: "metus. Vivamus euismod"
-sex_ads: 3
-status_ads: 3
-upload_at: 2
+    selectData = (file) => {
+        this.setState({selectedFile : file,openFile :true})
+    }
 
-    */
+    bidNow=(id_ads)=>{
+        Axios.post(`${koneksi}/project/bid-now`,{
+            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0
+        },getHeaderAuth()).then((res)=>{
+            Swal.fire(
+                'Iklan berhasil dibid',
+                'Status bid berada di dashboard!',
+                'success'
+              ).then((result)=>{
+                if(result.value){
+                  window.location="/dashboard"
+                }
+              })
+        }).catch((err)=>{
+            if(err.response.status == 409){
+                alert(err.response.data.message)
+            }
+        })
+    }
+
     render() {
         if(this.state.data === null){
             return(
@@ -67,6 +78,18 @@ upload_at: 2
         
         return (
             <div className='container my-5'>
+                {/* ============================== MODAL PHTO IMAGE ===================== */}
+                    <MDBModal isOpen={this.state.openFile} toggle={this.toggleFileModal}>
+                        <MDBModalHeader toggle={this.toggleFileModal}>Open File</MDBModalHeader>
+                        <MDBModalBody>
+                            <img src={this.state.selectedFile !== null ? koneksi + "/" + this.state.selectedFile.path : null} width='100%' alt=""/>
+                        </MDBModalBody>
+                        <MDBModalFooter>
+                            <MDBBtn onClick={this.toggleFileModal}>Exit</MDBBtn>
+                        </MDBModalFooter>
+                    </MDBModal>
+
+                {/* ============================== MODAL PHTO IMAGE ===================== */}
                 
                 <div className='row'>
                     <div className='col-md-4'>
@@ -114,7 +137,7 @@ upload_at: 2
                                     JSON.parse(this.state.data.file).map((val,index) => {
                                         console.log(koneksi + val.path)
                                         return(
-                                            <a href={koneksi + val.path} target='_blank'>File {index + 1}</a>
+                                            <span onClick={ () => this.selectData(val)} style={{color: "blue",cursor:'pointer',display:'block'}}> File {index + 1} </span> 
                                         )
                                     })
                                 }
@@ -161,6 +184,7 @@ upload_at: 2
 
                             </MDBCardBody>
                         </MDBCard>
+                        <MDBBtn className='mt-5' onClick={() => this.bidNow(this.state.data.id)}>Bid Now</MDBBtn>
                     </div>
                     
                 </div>
@@ -174,3 +198,12 @@ upload_at: 2
 export default connect(
     mapStateToProps,
 )(JobDetail);
+
+
+
+
+
+
+
+
+

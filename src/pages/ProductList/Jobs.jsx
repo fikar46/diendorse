@@ -9,6 +9,7 @@ import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
 import { formatRupiah } from '../../helper/functions';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom'
 
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
@@ -69,6 +70,7 @@ class productList extends Component {
         this.getDataCategory()
         // this.getDataKabupaten()
     }
+    
 
     getDataCategory = () => {
         Axios.get(koneksi + '/project/get-all-category',getHeaderAuth())
@@ -190,7 +192,9 @@ class productList extends Component {
                     <MDBCardBody>
                         <div className='row justify-content-between'>
                             <div className='col-8'>
-                                <h6 style={{display:'inline',fontWeight:'bold'}}>{val.title}</h6> <span className='ml-2' style={{fontSize:'12px', fontWeight:'lighter',color:'#1f2836',fontStyle:'italic'}}>{ moment(val.dataPosted.split('T')[0], "YYYY-MM-DD").fromNow()}</span>
+                                <Link to={'/project-detail/' + val.id}>
+                                    <h6 style={{display:'inline',fontWeight:'bold' , cursor:'pointer'}}>{val.title}</h6> <span className='ml-2' style={{fontSize:'12px', fontWeight:'lighter',color:'#1f2836',fontStyle:'italic'}}>{ moment(val.dataPosted.split('T')[0], "YYYY-MM-DD").fromNow()}</span>
+                                </Link>
                                 <MDBCardText>
                                     <div>
                                         <span style={{color : '#1f2836',fontSize:12,fontStyle:'italic',textDecoration:'underline',cursor:'pointer'}}>
@@ -215,6 +219,9 @@ class productList extends Component {
                                     0 Bids 
                                 </MDBCardText>
                                 <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=>this.bidNow(val.id)}>Bid Now</MDBBtn>
+                                <Link to={'/project-detail/' + val.id} >
+                                    <MDBBtn color='yellow' style={{padding:'10px',margin: '0px',}}>See Detail</MDBBtn>
+                                </Link>
                             </div>
                         </div>
                     </MDBCardBody>
