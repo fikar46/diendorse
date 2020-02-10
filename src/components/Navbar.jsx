@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBDropdown} from "mdbreact";
+import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBBtn,MDBNavItem, MDBNavLink, MDBNavbarToggler, MDBCollapse, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem, MDBDropdown} from "mdbreact";
 import {connect} from 'react-redux'
 import { localStorageKey } from "../helper/constant";
 import {onLogout} from './../redux/actions'
-
+import Logo from './../support/assets/images/landingPage/logo@2x.png'
+import './../support/css/LandingPage.css'
 class Navbar extends Component {
 state = {
   isOpen: false,
@@ -100,22 +101,33 @@ render() {
     )
   }
   return (
-        <MDBNavbar color="white" light expand="md" className='px-5'>
-        <MDBNavbarBrand href='/' style={{cursor:'pointer'}}>
-          <strong className="dark-text">Diendorse</strong>
-        </MDBNavbarBrand>
-        <MDBNavbarToggler onClick={this.toggleCollapse} />
-        <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
-          <MDBNavbarNav right>
-            <MDBNavItem>
-              <MDBNavLink to="/login">Log In</MDBNavLink>
-            </MDBNavItem>
-            <MDBNavItem>
-              <MDBNavLink to="/signup">Sign Up</MDBNavLink>
-            </MDBNavItem>
-          </MDBNavbarNav>
-        </MDBCollapse>
-      </MDBNavbar>
+    <div className='container'>
+        <ul className="nav row justify-content-between">
+          <li className="nav-item">
+            <a className="nav-link" href="/">
+              <img src={Logo} style={{height: '61,95px', width: '130px'}} />
+            </a>
+          </li>
+          <div className='d-flex justify-content-center align-items-center'>
+            <li className="nav-item">
+              <a className="nav-link" style={{fontSize: '16px', fontFamily: 'Avenir'}} href="/login">Login</a>
+            </li>
+            <li className="nav-item">
+            <MDBBtn href='/signup' color='blue' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '10px',textTransform:'capitalize' , color: "white"}}>Getting Started </MDBBtn>            
+            </li>
+          </div>
+          {/* <li class="nav-item menu">
+                                        <a class="nav-link" href="#">Find Influencer</a>
+                                      </li>
+                      
+                        <li class="nav-item list">
+                          <a class="nav-link" href="#">Find Business</a>
+                        </li>
+                        <li class="nav-item list">
+                                <a class="nav-link" href="#"></a>
+                              </li> */}
+      </ul>
+    </div>
     );
   }
 }

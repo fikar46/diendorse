@@ -19,6 +19,7 @@ import LandingPage from './pages/LandingPage/LandingPage'
 import OnGoingBusiness from './pages/Dashboard/business/OnGoing'
 import HistoryBusiness from './pages/Dashboard/business/History'
 import ProjectDetail from './pages/ProductList/JobDetail'
+import UserProfile from './pages/Profile/userProfile'
 
 class App extends Component {
   state = {
@@ -60,6 +61,7 @@ class App extends Component {
             <Route exact path='/create-ads' component={CreateProjectAds} />
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path="/ongoing-ads" component={OnGoingBusiness}/>
+            <Route exact path="/user-profile/:id" component={UserProfile}/>
             <Route exact path="/history-ads" component={HistoryBusiness}/>
             <Route exact path="/project-detail/:id" component={ProjectDetail}/>
             <Route path="*" component={PageNotFound} />

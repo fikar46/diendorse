@@ -6,6 +6,7 @@ import { koneksi } from '../../environment';
 import { getHeaderAuth } from '../../helper/service';
 import LoadingPage from '../../components/LoadingPage';
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 import { formatRupiah } from '../../helper/functions';
 import Swal from 'sweetalert2'
 
@@ -23,6 +24,10 @@ class JobDetail extends Component {
         openFile : false,
         selectedFile : null,
         dataUserBidding : null,
+        openPrice:false,
+        priceLimit : null,
+        putPrice : "",
+        id_selected : null
     }
 
     componentDidMount(){
@@ -80,6 +85,28 @@ class JobDetail extends Component {
         })
     }
 
+    renderBtnBidding = (id_ads) => {
+        if(this.state.dataUserBidding.length > 0){
+            if(this.state.dataUserBidding.filter((val) => {
+                return val.fullname == this.props.user.fullname
+            }).length > 0){
+                return(
+                    <MDBBtn onClick={() => {this.bidNow(id_ads)}} disabled>You cannot Bid twice</MDBBtn>                    
+                )
+            }else{
+                return(
+                    <MDBBtn onClick={() => {this.bidNow(id_ads)}}>Bid Now</MDBBtn>
+                )
+            }
+        }else{
+            return(
+                <MDBBtn onClick={() => {this.bidNow(id_ads)}}>Bid Now</MDBBtn>
+            )
+        }
+    }
+    togglePrice = () => {
+        this.setState({openFile : !this.state.openFile,id_selected : null,putPrice: null,priceLimit : null})
+    }
     render() {
         if(this.state.data === null || this.state.dataUserBidding === null){
             return(
@@ -101,6 +128,22 @@ class JobDetail extends Component {
                     </MDBModal>
 
                 {/* ============================== MODAL PHTO IMAGE ===================== */}
+
+
+                {/* ============================= MODAL BID ============================== */}
+
+                <MDBModal isOpen={this.state.openPrice} toggle={this.togglePrice}>
+                    <MDBModalHeader toggle={this.togglePrice}>Put Your Price</MDBModalHeader>
+                    <MDBModalBody>
+                        <input onChange={this.onChangeHandler} value={this.state.putPrice} name='putPrice' type="number" placeholder={`Put Your Price From ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[0]) : null} - ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[1]) : null}`} ref='price' className='form-control'/>
+                    </MDBModalBody>
+                    <MDBModalFooter>
+                        <MDBBtn onClick={() =>  this.bidNow (this.state.id_selected !== null ? this.state.id_selected : null)}>Bid</MDBBtn>
+                        <MDBBtn onClick={this.togglePrice}>Cancel</MDBBtn>
+                    </MDBModalFooter>
+                </MDBModal>
+
+                {/* ============================= MODAL BID ============================== */}
                 
                 <div className='row'>
                     <div className='col-md-4'>
@@ -170,6 +213,7 @@ class JobDetail extends Component {
                                         <th>Username Ig</th>
                                         <th>Follower Ig</th>
                                         <th>Engagement Ig</th>
+                                        <th>Price</th>
                                         </tr>
                                     </MDBTableHead>
                                     <MDBTableBody>
@@ -179,11 +223,12 @@ class JobDetail extends Component {
                                                return(
                                                    <tr>
                                                        <td>{index +1}</td>
-                                                       <td>{val.fullname}</td>
+                                                       <td><Link to={'/user-profile/' + val.id_user }> {val.fullname} </Link></td>
                                                        <td>{val.email}</td>
                                                        <td>{val.username_ig}</td>
                                                        <td>{val.followers_ig}</td>
                                                        <td>{val.engagement_ig}</td>
+                                                       <td>{formatRupiah( String(val.price))}</td>
                                                    </tr>
                                                )
                                            })
@@ -204,7 +249,9 @@ class JobDetail extends Component {
 
                             </MDBCardBody>
                         </MDBCard>
-                        <MDBBtn className='mt-5' onClick={() => this.bidNow(this.state.data.id)}>Bid Now</MDBBtn>
+                        {
+                            this.renderBtnBidding(this.state.data.id)
+                        }
                     </div>
                     
                 </div>

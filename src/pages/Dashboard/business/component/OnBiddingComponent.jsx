@@ -6,7 +6,7 @@ import { koneksi } from '../../../../environment';
 import { getHeaderAuth } from '../../../../helper/service';
 import Swal from 'sweetalert2';
 import {formatRupiah} from './../../../../helper/functions'
-
+import { Link } from 'react-router-dom'
 
 
 class OnBiddingComponent extends Component {
@@ -73,11 +73,12 @@ class OnBiddingComponent extends Component {
             )
         }
         return this.state.influencers.map((item,i) =>{
+            console.log(item)
             var place = JSON.parse(item.place)
             return(
                 <tr>
                     <td>{i+1}</td>
-                    <td>{item.fullname}</td>
+                    <td> <Link to={'/user-profile/' + item.id_user} style={{color:"blue",textDecoration:'underline',fontStyle:'italic'}}> {item.fullname} </Link></td>
                     <td>{item.username_ig}</td>
                     <td>{item.followers_ig}</td>
                     <td>{item.engagement_ig}</td>
@@ -109,7 +110,7 @@ class OnBiddingComponent extends Component {
             return(
                 <tr>
                         <td>{i+1}</td>
-                        <td>{item.fullname}</td>
+                        <td> <Link to={'/user-profile/' + item.id_user} style={{color:"blue",textDecoration:'underline',fontStyle:'italic'}}> {item.fullname} </Link></td>
                         <td>{item.username_ig}</td>
                         <td>{item.followers_ig}</td>
                         <td>{item.engagement_ig}</td>
