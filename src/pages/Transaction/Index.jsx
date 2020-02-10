@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import Axios from '../../../../backend/node_modules/axios'
+import Axios from 'axios'
 import { koneksi } from '../../environment'
 import queryString from 'query-string';
 class PaymentPage extends Component {

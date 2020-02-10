@@ -16,12 +16,24 @@ class ViewAllOnGoing extends Component {
         this.getOngoingAds()
     }
     getOngoingAds=()=>{
-        Axios.get(`${koneksi}/project/get-ongoing-ads-all/${this.props.user.id}`,getHeaderAuth())
-        .then((res)=>{
-            console.log(res.data)
-            this.setState({ongoing:res.data})
-        }).catch((err)=>{
-            console.log(err)
+        Axios.get(koneksi + '/project/get-all-bids',getHeaderAuth())
+        .then((bids) => {
+            Axios.get(`${koneksi}/project/get-ongoing-ads-all/${this.props.user.id}`,getHeaderAuth())
+            .then((res)=>{
+                let data = [];
+                res.data.forEach((val) =>{
+                    var obj = val
+                    obj['bid'] = bids.data.data.filter((bid) => {
+                        return bid.id_project_ads == val.id
+                    }).length
+                    data.push(obj)
+                })
+
+                console.log(data)
+                this.setState({ongoing:data})
+            }).catch((err)=>{
+                console.log(err)
+            })
         })
     }
     onGoingMapData=()=>{
@@ -48,7 +60,7 @@ class ViewAllOnGoing extends Component {
                      <td>{item.product_name}</td>
                      <td>{date.getDate()} {months[date.getMonth()]} {date.getFullYear()}</td>
                      <td>{status}</td>
-                     <td>0 Bidding</td>
+                     <td>{item.bid} Bidding</td>
                      <td><Link to={`/ongoing-ads?ads=${item.id}`}><MDBIcon icon="chevron-right" /></Link></td>
                  </tr>
              )

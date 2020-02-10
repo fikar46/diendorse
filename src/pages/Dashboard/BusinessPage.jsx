@@ -19,12 +19,27 @@ class BusinessPage extends Component {
     }
     getOngoingAds=()=>{
         this.setState({loadingOngoing:true})
-        Axios.get(`${koneksi}/project/get-ongoing-ads/${this.props.user.id}`,getHeaderAuth())
-        .then((res)=>{
-            this.setState({ongoing:res.data,loadingOngoing:false})
-        }).catch((err)=>{
-            console.log(err)
-            this.setState({loadingOngoing:false})
+        Axios.get(koneksi + '/project/get-all-bids',getHeaderAuth())
+        .then((bids) => {
+            // console.log(bids.data)
+            Axios.get(`${koneksi}/project/get-ongoing-ads/${this.props.user.id}`,getHeaderAuth())
+            .then((res)=>{
+                let data = [];
+                res.data.forEach((val) =>{
+                    var obj = val
+                    obj['bid'] = bids.data.data.filter((bid) => {
+                        return bid.id_project_ads == val.id
+                    }).length
+                    data.push(obj)
+                })
+
+                // console.log(data)
+
+                this.setState({ongoing:data,loadingOngoing:false})
+            }).catch((err)=>{
+                console.log(err)
+                this.setState({loadingOngoing:false})
+            })
         })
     }
     getHistoryAds=()=>{
@@ -71,7 +86,7 @@ class BusinessPage extends Component {
                     <td>{item.product_name}</td>
                     <td>{date.getDate()} {months[date.getMonth()]} {date.getFullYear()}</td>
                     <td>{status}</td>
-                    <td>0 Bidding</td>
+                    <td>{item.bid} Bidding</td>
                     <td><Link to={`/ongoing-ads?ads=${item.id}`}><MDBIcon icon="chevron-right" /></Link></td>
                 </tr>
             )
