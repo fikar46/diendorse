@@ -5,8 +5,7 @@ import Axios from 'axios';
 import { koneksi } from '../../../../environment';
 import { getHeaderAuth } from '../../../../helper/service';
 import Swal from 'sweetalert2';
-import {formatRupiah} from './../../../../helper/functions'
-import { Link } from 'react-router-dom'
+import queryString from 'querystring'
 
 
 class OnBiddingComponent extends Component {
@@ -123,13 +122,13 @@ class OnBiddingComponent extends Component {
         })
         return data;
     }
-
-    renderTotalHarga = () => {
-        var total = 0
-        this.state.influencers.forEach((val) => {
-            total += val.price
+    checkOut=()=>{
+        Axios.post(`${koneksi}/payment/get-information`)
+        .then((res)=>{
+            console.log(res.data)
+        }).catch((err)=>{
+            console.log(err)
         })
-        return formatRupiah( String(total),'Rp') 
     }
     render() {
         return (
@@ -184,7 +183,9 @@ class OnBiddingComponent extends Component {
                 </div>                
 
                </div>
-
+               <div className="text-right">
+                   <button className="btn btn-success" onClick={this.checkOut}>Checkout</button>
+               </div>
             </div>
         )
     }
