@@ -34,7 +34,9 @@ roleBrowse=()=>{
     )
   }else if(this.props.user.role == "business"){
     return(
-        null
+      <MDBNavLink to='/find-influencer'>
+      <strong className="black-text">Find Influencer</strong>
+              </MDBNavLink>
     )
   }
 }
