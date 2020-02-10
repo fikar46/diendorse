@@ -5,6 +5,7 @@ import {koneksi} from "../../environment"
 import {connect} from 'react-redux'
 import { onRegisterSuccess } from './../../redux/actions'
 import { Redirect } from 'react-router-dom'
+import img_1 from '../../support/assets/images/signUp/Asset2.png'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -88,8 +89,15 @@ class Login extends Component {
         }
         return (
             <div className='container'>
-                <div className='row justify-content-center pt-5 mt-5'>
-                    <MDBCard className='col-md-4'>
+                <div className="row" style={{height:"100%"}}>
+                <div className="col bg-col-left">
+                    <div className="row justify-content-center py-5 ">
+                    <img src={img_1} alt="" style={{width: '500px', height: '500px'}} />
+                    </div>
+                </div>
+                <div className="col bg-col-right">
+                <div className="row justify-content-center pt-5 mt-5 ">
+                <MDBCard className='col-md-7' style={{borderRadius:"20px", paddingTop:"10px", marginTop:"15px"}}>
                         <MDBCardBody>
                             <form
                                 onSubmit={this.submitHandler}
@@ -126,7 +134,7 @@ class Login extends Component {
                                 </div>
                                 <div className="text-center">
                                     {this.errorForm()}
-                                <MDBBtn color="primary" type="submit">
+                                <MDBBtn color='#2E9DFF' style={{backgroundColor : "#2E9DFF" , color: "white", borderRadius:'100px'}} type="submit">
                                 {
                                     this.state.loading ? 
                                         <div  style={{color:"white"}} className="spinner-border mx-4" role="status">
@@ -141,6 +149,8 @@ class Login extends Component {
                             </form>
                         </MDBCardBody>
                     </MDBCard>
+                </div>
+                </div>
                 </div>
 
             </div>

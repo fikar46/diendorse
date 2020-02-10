@@ -1,6 +1,6 @@
 var api;
 if(window.location.hostname == 'localhost'){
-     api = 'http://localhost:4000';
+     api = 'https://diendorse.appspot.com';
 }else if(window.location.hostname == "diendorse.siapptn.com"){
      api = 'https://diendorse.appspot.com';
 }else{
