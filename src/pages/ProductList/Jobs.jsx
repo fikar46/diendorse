@@ -99,32 +99,43 @@ class productList extends Component {
 
     getData =(limit,dataFilered) => {
         this.setState({loading : true})
-        Axios.post(koneksi + '/project/get-all-ads-ongoing?limit=' + limit,dataFilered,getHeaderAuth())
-        .then((res) => {
-            let data;
-            data = res.data.data.map((val) => {
-                return{
-                    title : val.product_name,
-                    user : val.ads_creator,
-                    categories : val.category_name,
-                    dataPosted : val.created_ads,
-                    description : val.description,
-                    age_ads : val.age_ads,
-                    user_email : val.email_creator,
-                    priceFrom : JSON.parse(val.estimation_ads).min,
-                    priceTo : JSON.parse(val.estimation_ads).max,
-                    file : val.file,
-                    id : val.id,
-                    id_user : val.id_user,
-                    location : JSON.parse(val.location_ads),
-                    sex_ads : val.sex_ads,
-                    status_ads : val.status_ads,
-                    upload_at : val.upload_at,
-                    days : val.days,
-                    loading : false,
-                }
-            })
-            this.setState({data : data , filteredData : data,limit : limit,loading : false})
+        Axios.get(koneksi + '/project/get-all-bids',getHeaderAuth())
+        .then((bids) => {
+            console.log(bids)
+            if(!bids.data.error){
+                Axios.post(koneksi + '/project/get-all-ads-ongoing?limit=' + limit,dataFilered,getHeaderAuth())
+                .then((res) => {
+                    let data;
+                    data = res.data.data.map((val) => {
+                        return{
+                            title : val.product_name,
+                            user : val.ads_creator,
+                            bid : bids.data.data.filter((bid) => bid.id_project_ads == val.id).length,
+                            categories : val.category_name,
+                            dataPosted : val.created_ads,
+                            description : val.description,
+                            age_ads : val.age_ads,
+                            user_email : val.email_creator,
+                            priceFrom : JSON.parse(val.estimation_ads).min,
+                            priceTo : JSON.parse(val.estimation_ads).max,
+                            file : val.file,
+                            id : val.id,
+                            id_user : val.id_user,
+                            location : JSON.parse(val.location_ads),
+                            sex_ads : val.sex_ads,
+                            status_ads : val.status_ads,
+                            upload_at : val.upload_at,
+                            days : val.days,
+                            loading : false,
+                        }
+                    })
+                    console.log(data)
+                    this.setState({data : data , filteredData : data,limit : limit,loading : false})
+                })
+            }
+        })
+        .catch((err) => {
+            console.log(err)
         })
     }
 
@@ -227,7 +238,7 @@ class productList extends Component {
                                 </h6>
                                 <MDBCardText>
                                     {val.days} Day <br/>
-                                    0 Bids 
+                                   {val.bid}  Bids 
                                 </MDBCardText>
                                 <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=> this.setState({openFile : true,priceLimit : [val.priceFrom,val.priceTo] , id_selected : val.id})}>Bid Now</MDBBtn>
                                 <Link to={'/project-detail/' + val.id} >
