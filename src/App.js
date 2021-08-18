@@ -22,6 +22,8 @@ import ProjectDetail from './pages/ProductList/JobDetail'
 import UserProfile from './pages/Profile/userProfile'
 import PaymentPage from './pages/Transaction/Index'
 import Footer from './components/Footer'
+import CompleteProfile from './pages/Profile/CompleteProfile';
+import InfluencerDetail from './pages/ProductList/InfluencerDetail';
 
 class App extends Component {
   state = {
@@ -66,7 +68,9 @@ class App extends Component {
             <Route exact path="/user-profile/:id" component={UserProfile}/>
             <Route exact path="/history-ads" component={HistoryBusiness}/>
             <Route exact path="/project-detail/:id" component={ProjectDetail}/>
+            <Route exact path="/profile-detail/:id" component={InfluencerDetail}/>
             <Route exact path="/payment" component={PaymentPage}/>
+            <Route exact path="/complete-profile" component={CompleteProfile}/>
             <Route path="*" component={PageNotFound} />
           </Switch>
         }

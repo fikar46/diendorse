@@ -74,7 +74,6 @@ class MyProfile extends Component {
     getData = () => {
         Axios.get(koneksi + '/auth/getuserdetail/' + this.props.user.id,getHeaderAuth())
         .then((res) => {
-            
             if(!res.data.error){
                 if(res.data.data !== undefined){
                     this.setState({dataDetail: res.data.data,gotProfile:true})
@@ -83,6 +82,7 @@ class MyProfile extends Component {
                 }
             }else{
                 this.setState({gotProfile : false})
+                window.location.href="/complete-profile"
             }
             
         })
@@ -238,7 +238,7 @@ class MyProfile extends Component {
         }
         var {tagline,description,place,birth,followers_ig,engagement_ig,price,username_ig} = this.state.dataDetail
         console.log(this.props.user)
-        console.log(place)
+        console.log(price)
         return (
             <div className='container py-5'>
                 {/* ========= MODAL EDIT PROFILE ================ */}

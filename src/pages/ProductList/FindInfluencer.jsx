@@ -193,8 +193,8 @@ verified: 1
                                    {val.engagement_ig}  % Engagement Rate 
                                 </MDBCardText>
                                 {/* <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=> this.setState({openFile : true,priceLimit : [val.priceFrom,val.priceTo] , id_selected : val.id})}>Bid Now</MDBBtn> */}
-                                <Link to={'/profile-user/' + val.id_user} >
-                                    <MDBBtn color='yellow' style={{padding:'10px',margin: '0px',}}>Hire Now</MDBBtn>
+                                <Link to={'/profile-detail/' + val.id_user} >
+                                    <MDBBtn color='primary' style={{padding:'10px',margin: '0px',}}>Hire Now</MDBBtn>
                                 </Link>
                             </div>
                         </div>

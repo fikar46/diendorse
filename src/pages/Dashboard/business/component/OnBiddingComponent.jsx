@@ -124,7 +124,7 @@ class OnBiddingComponent extends Component {
     renderTotalHarga = () => {
         var total = 0
         this.state.influencers.forEach((val) => {
-            total += val.price
+            total += parseInt(val.price)
         })
         return formatRupiah( String(total),'Rp') 
     }
