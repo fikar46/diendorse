@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Axios from '../../../../../backend/node_modules/axios'
+import Axios from 'axios'
 import { koneksi } from '../../../environment'
 import { connect } from 'react-redux'
 
