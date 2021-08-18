@@ -9,6 +9,7 @@ import LoadingPage from './../../components/LoadingPage'
 import Swal from 'sweetalert2';
 import { localStorageKey } from '../../helper/constant';
 import {onRegisterSuccess} from './../../redux/actions'
+import { formatRupiah } from '../../helper/functions';
 
 const apiUrl = 'https://x.rajaapi.com/MeP7c5ne'
 function mapStateToProps(state) {
@@ -32,7 +33,7 @@ class MyProfile extends Component {
         },
         isOpenModal : false,
         loading : false,
-        got : false,
+        gotProfile : false,
         kabupatens : null,
         value : '',
         provinsi : [],
@@ -41,13 +42,13 @@ class MyProfile extends Component {
         loadingKabupaten : false,
         loadingKecamatan : false,
 
-        isOpenPassword : false
+        isOpenPassword : false,
+        hai:""
         
     }
-
     componentDidMount(){
         this.getData()
-        this.getDataKabupaten()
+        // this.getDataKabupaten()
         this.getDataProvinsi()
     }
 
@@ -75,30 +76,32 @@ class MyProfile extends Component {
         .then((res) => {
             if(!res.data.error){
                 if(res.data.data !== undefined){
-                    this.setState({dataDetail: res.data.data,got:true})
+                    this.setState({dataDetail: res.data.data,gotProfile:true})
                 }else{
-                    this.setState({got : true})
+                    this.setState({gotProfile : true})
                 }
+            }else{
+                this.setState({gotProfile : false})
+                window.location.href="/complete-profile"
             }
             
         })
         .catch((err) => {
             console.log(err)
-            this.setState({got : true})
         })
     }
 
-    getDataKabupaten = () => {
-        Axios.get(koneksi + '/auth/getallkabupaten' , getHeaderAuth())
-        .then((res) => {
-            if(!res.data.error){
-                var data = res.data.data.map((val) => {
-                    return {id_kab : val.id_kab , label : val.nama}
-                })
-                this.setState({kabupatens : data})
-            }
-        })
-    }
+    // getDataKabupaten = () => {
+    //     Axios.get(koneksi + '/auth/getallkabupaten' , getHeaderAuth())
+    //     .then((res) => {
+    //         if(!res.data.error){
+    //             var data = res.data.data.map((val) => {
+    //                 return {id_kab : val.id_kab , label : val.nama}
+    //             })
+    //             this.setState({kabupatens : data})
+    //         }
+    //     })
+    // }
 
     toogle = () => {
         this.setState({isOpenModal: !this.state.isOpenModal})
@@ -230,12 +233,12 @@ class MyProfile extends Component {
     }
 
     render() {
-        if(this.state.got == false || this.state.kabupatens == null){
+        if(this.state.gotProfile == false){
             return <LoadingPage />
         }
         var {tagline,description,place,birth,followers_ig,engagement_ig,price,username_ig} = this.state.dataDetail
         console.log(this.props.user)
-        console.log(place)
+        console.log(price)
         return (
             <div className='container py-5'>
                 {/* ========= MODAL EDIT PROFILE ================ */}
@@ -359,10 +362,13 @@ class MyProfile extends Component {
                                 <div className='col-md-4'>
                                     <img src='https://storage.siapptn.com/image/ava/avatar.png' width='100%'>
                                     </img>
-                                    <div style={{backgroundColor:'#4fb55d',color:"white",textAlign:'center'}} className='p-2'>
-                                        <div>
-                                            <MDBIcon icon="dollar-sign" />
-                                            <span className='ml-2'>Avg. Price = {price ? Math.round((JSON.parse(price).feed +  JSON.parse(price).story  + JSON.parse(price).both)/3)  : '-'} / Item</span>
+                                    <div style={{color:"grey",textAlign:'left'}} className='p-2'>
+                                        <div className="ml-2">
+                                            {/* <MDBIcon icon="dollar-sign" /> */}
+                                                <small>Instagram Post = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).feed) , 'Rp')}</span></small><br/>
+                                                <small>Instagram Story = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).story) , 'Rp')}</span></small> <br/>
+                                                <small>Both = <span style={{color :'#2E9DFF'}}>{formatRupiah( String(JSON.parse(price).both) , 'Rp')}</span></small>
+                                            
                                         </div>
                                     </div>
                                 </div>

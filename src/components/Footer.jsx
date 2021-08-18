@@ -8,8 +8,8 @@ class Footer extends Component{
               <div className="row ">
                 <div className="col-md">
                   <div className="ftco-footer-widget mb-4">
-                    <h2 className="ftco-heading-2">About Diendorse</h2>
-                    <p>Diendorse is a platfom to connect influencer and small business to growth their business
+                    <h2 className="ftco-heading-2">About Adsfluencer</h2>
+                    <p>Adsfluencer is a platfom to connect influencer and small business to growth their business
                     </p>
                     <ul className="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
                       <li className=""><a href="https://line.me/R/ti/p/%40sdf2355y"><span className="fab fa-line" /></a></li>
@@ -47,7 +47,7 @@ class Footer extends Component{
                       <ul>
                        
                         {/* <li><a href="#"><span className="icon icon-phone" /><span className="text">+2 392 3929 210</span></a></li> */}
-                        <li><a href="#"><span className="icon icon-envelope" /><span className="text">info@diendorse.com</span></a></li>
+                        <li><a href="#"><span className="icon icon-envelope" /><span className="text">info@Adsfluencer.com</span></a></li>
                         <li><span className="icon icon-map-marker" /><span className="text">Jl. Trunojoyo no 11 Bandung</span></li>
                       </ul>
                     </div>

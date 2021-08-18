@@ -15,11 +15,14 @@ class CompleteProfile extends Component {
     state={
         provinsi:[],
         kabupaten:[],
-        kecamatan : []
+        kecamatan : [],
+        interestOptions:[],
+        interest:''
     }
     componentDidMount(){
         // this.getDataKabupaten()
         this.getDataProvinsi()
+        this.getInterest()
     }
     renderOption = (state) => {
         var jsx =  state.map((val) => {
@@ -101,7 +104,7 @@ class CompleteProfile extends Component {
             }
         })
         data.fullname = this.props.user.fullname
-        
+        data.interest = this.state.interest
         if(place){
             data['place'] = JSON.stringify(place)
         }
@@ -114,25 +117,33 @@ class CompleteProfile extends Component {
         console.log(data)
         Axios.post(koneksi + '/auth/completeprofile/' + this.props.user.id ,data,getHeaderAuth())
         .then((res) => {
-            if(!res.data.error){
-                this.setState({loading :false , isOpenModal : false,dataDetail : res.data.data})
-                var dataStorage = JSON.parse(localStorage.getItem(localStorageKey))
-                console.log(dataStorage)
-                console.log(res.data.data)
-                dataStorage.fullname = res.data.data.fullname
-                localStorage.setItem(localStorageKey , JSON.stringify(dataStorage))
-                this.props.onRegisterSuccess(dataStorage)
-                
-
-                alert('Edit Data Success')
-                window.location.href="/dashboard"
-
-            }
+            alert('Edit Data Success')
+            window.location.href="/profile"
         })
         .catch((err) => {
             console.log(err)
         })
     }
+    getInterest=()=>{
+        Axios.get(`${koneksi}/project/account-interest`,getHeaderAuth())
+        .then((res)=>{
+          this.setState({interestOptions:res.data})
+        }).catch((err)=>{
+          console.log(err)
+        })
+      }
+      optionDataInterest=()=>{
+        var data = this.state.interestOptions.map((item)=>{
+          return (
+  <option value={item.id}>{item.name}</option>
+                              
+          )
+        })
+        return data;
+      }
+      optionInterest=(n)=>{
+        this.setState({interest:n.target.value})
+      }
     render() {
         return(
             <div className="container">
@@ -190,10 +201,18 @@ class CompleteProfile extends Component {
                         </div>
 
                         <label htmlFor="tagline" className="grey-text mt-3">
+                            Your Interest
+                        </label>
+                        
+                        <select className="form-control col-3" onChange={this.optionInterest} id="categoryAds">
+                                    <option value="">Choose Interest</option>
+                                    {this.optionDataInterest()}
+                                </select>
+
+                                <label htmlFor="tagline" className="grey-text mt-3">
                             Your Tagline
                         </label>
-                        <textarea   id="tagline" ref='tagline' placeholder='ex . im music influencer' className="form-control" />
-
+                        <textarea  id="tagline" ref='tagline' placeholder='ex . im music influencer' className="form-control" />
                         <label htmlFor="description" className="grey-text mt-3">
                             Your Description
                         </label>

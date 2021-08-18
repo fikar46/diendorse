@@ -171,26 +171,31 @@ class productList extends Component {
         }
     }
     bidNow=(id_ads)=>{
-        if(this.state.putPrice > this.state.priceLimit[1] && this.state.putPrice < this.state.priceLimit[0]){
-            return Swal.fire('Error','Your price out of Limit','error')
-        }
-        Axios.post(`${koneksi}/project/bid-now`,{
-            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0,price : this.state.putPrice
-        },getHeaderAuth()).then((res)=>{
-            Swal.fire(
-                'Iklan berhasil dibid',
-                'Status bid berada di dashboard!',
-                'success'
-              ).then((result)=>{
-                if(result.value){
-                  window.location="/dashboard"
-                }
-              })
-        }).catch((err)=>{
-            if(err.response.status == 409){
-                alert(err.response.data.message)
+        if(this.props.user == undefined){
+            window.location.href="/login"
+        }else{
+            if(this.state.putPrice > this.state.priceLimit[1] || this.state.putPrice < this.state.priceLimit[0]){
+                return Swal.fire('Error','Your price out of Limit','error')
             }
-        })
+            Axios.post(`${koneksi}/project/bid-now`,{
+                id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0,price : this.state.putPrice
+            },getHeaderAuth()).then((res)=>{
+                Swal.fire(
+                    'Iklan berhasil dibid',
+                    'Status bid berada di dashboard!',
+                    'success'
+                  ).then((result)=>{
+                    if(result.value){
+                      window.location="/dashboard"
+                    }
+                  })
+            }).catch((err)=>{
+                if(err.response.status == 409){
+                    alert(err.response.data.message)
+                }
+            })
+        }
+    
     }
     togglePrice = () => {
         this.setState({openFile : !this.state.openFile,id_selected : null,putPrice: null,priceLimit : null})

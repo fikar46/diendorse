@@ -31,6 +31,9 @@ class JobDetail extends Component {
     }
 
     componentDidMount(){
+        if(this.props.user == undefined){
+            window.location.href="/login"
+        }
         console.log('masuk')
         var param = this.props.match.params
         // console.log(param)
@@ -66,8 +69,12 @@ class JobDetail extends Component {
     }
 
     bidNow=(id_ads)=>{
+        // console.log(this.state.putPrice,JSON.parse(this.state.data.estimation_ads).max,JSON.parse(this.state.data.estimation_ads).min)
+        if(parseInt(this.state.putPrice) >parseInt(JSON.parse(this.state.data.estimation_ads).max) || parseInt(this.state.putPrice) < parseInt(JSON.parse(this.state.data.estimation_ads).min)){
+            return Swal.fire('Error','Your price out of Limit','error')
+        }
         Axios.post(`${koneksi}/project/bid-now`,{
-            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0
+            id_user:this.props.user.id,id_project_ads:id_ads,status_bidding:0,price:this.state.putPrice
         },getHeaderAuth()).then((res)=>{
             Swal.fire(
                 'Iklan berhasil dibid',
@@ -88,6 +95,7 @@ class JobDetail extends Component {
     renderBtnBidding = (id_ads) => {
         if(this.state.dataUserBidding.length > 0){
             if(this.state.dataUserBidding.filter((val) => {
+                console.log(val)
                 return val.fullname == this.props.user.fullname
             }).length > 0){
                 return(
@@ -95,7 +103,7 @@ class JobDetail extends Component {
                 )
             }else{
                 return(
-                    <MDBBtn onClick={() => {this.bidNow(id_ads)}}>Bid Now</MDBBtn>
+                    <MDBBtn onClick={() => this.setState({openPrice : true,id_selected:id_ads   })} >Bid Now</MDBBtn>
                 )
             }
         }else{
@@ -104,8 +112,12 @@ class JobDetail extends Component {
             )
         }
     }
+    onChangeHandler = e => {
+        this.setState({[e.target.name] : e.target.value})
+
+    }
     togglePrice = () => {
-        this.setState({openFile : !this.state.openFile,id_selected : null,putPrice: null,priceLimit : null})
+        this.setState({openPrice : !this.state.openPrice,id_selected : null,putPrice: null,priceLimit : null})
     }
     render() {
         if(this.state.data === null || this.state.dataUserBidding === null){
@@ -113,7 +125,7 @@ class JobDetail extends Component {
                 <LoadingPage />
             )
         }
-        
+       
         return (
             <div className='container my-5'>
                 {/* ============================== MODAL PHTO IMAGE ===================== */}
@@ -135,7 +147,7 @@ class JobDetail extends Component {
                 <MDBModal isOpen={this.state.openPrice} toggle={this.togglePrice}>
                     <MDBModalHeader toggle={this.togglePrice}>Put Your Price</MDBModalHeader>
                     <MDBModalBody>
-                        <input onChange={this.onChangeHandler} value={this.state.putPrice} name='putPrice' type="number" placeholder={`Put Your Price From ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[0]) : null} - ${this.state.priceLimit !== null ? formatRupiah(this.state.priceLimit[1]) : null}`} ref='price' className='form-control'/>
+                        <input onChange={this.onChangeHandler} value={this.state.putPrice} name='putPrice' type="number" placeholder={`Put Your Price From ${formatRupiah(JSON.parse(this.state.data.estimation_ads).min,'Rp')} - ${formatRupiah(JSON.parse(this.state.data.estimation_ads).max,'Rp')}`} ref='price' className='form-control'/>
                     </MDBModalBody>
                     <MDBModalFooter>
                         <MDBBtn onClick={() =>  this.bidNow (this.state.id_selected !== null ? this.state.id_selected : null)}>Bid</MDBBtn>

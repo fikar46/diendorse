@@ -203,6 +203,9 @@ class InfluencerDetail extends Component {
                 <LoadingPage />
             )
         }
+        if(this.props.user == undefined){
+            window.location.href="/login"
+        }
         console.log(price)
         return (
             <div className='container my-5'>

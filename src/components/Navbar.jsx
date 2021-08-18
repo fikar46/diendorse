@@ -3,7 +3,7 @@ import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBBtn,MDBNavItem, MDBNavLink,
 import {connect} from 'react-redux'
 import { localStorageKey } from "../helper/constant";
 import {onLogout} from './../redux/actions'
-import Logo from './../support/assets/images/landingPage/logo@2x.png'
+import Logo from './../support/assets/images/landingPage/adsfluencer.png'
 import './../support/css/LandingPage.css'
 class Navbar extends Component {
 state = {
@@ -57,7 +57,7 @@ render() {
       <MDBNavbar color="white" light expand="md" className='px-5'>
         <MDBNavbarBrand href='/dashboard' style={{cursor:'pointer'}}>
           {/* <strong className="black-text">Diendorse</strong> */}
-          <img src={Logo} style={{height: '61,95px', width: '130px'}} />
+          <img src={Logo} style={{height: '61,95px', width: '170px'}} />
         </MDBNavbarBrand>
         <MDBNavbarToggler onClick={this.toggleCollapse} />
         <MDBCollapse id="navbarCollapse3" isOpen={this.state.isOpen} navbar>
@@ -109,7 +109,7 @@ render() {
         <ul className="nav row justify-content-between">
           <li className="nav-item">
             <a className="nav-link" href="/">
-              <img src={Logo} style={{height: '61,95px', width: '130px'}} />
+              <img src={Logo} style={{height: '61,95px', width: '170px'}} />
             </a>
           </li>
           <div className='d-flex justify-content-center align-items-center'>
