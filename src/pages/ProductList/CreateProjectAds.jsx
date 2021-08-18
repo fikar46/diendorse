@@ -431,7 +431,7 @@ return(
                                 <br/>
                                 <br/>
                                 <label htmlFor="days" className="black-text">
-                                how long do you want your ad on feed? (Only post)
+                                how long do you want your ad on feed? (Only Instagram post)
                                 </label>
                                 <input type="number" id="days" className="form-control col-2" ref="product_name" placeholder="How many days" defaultValue="1" ref="days"/>
                                 <br />

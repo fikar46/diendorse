@@ -12,7 +12,6 @@ class OnGoingDetail extends Component {
     }
     componentDidMount(){
         this.getDataOngoingDetail()
-        this.getDataTransaksi()
     }
     getDataOngoingDetail=()=>{
         Axios.post(`${koneksi}/project/get-ongoing-ads-detail`,{
@@ -24,17 +23,7 @@ class OnGoingDetail extends Component {
             console.log(err)
         })
     }
-    getDataTransaksi=()=>{
-        Axios.post(`${koneksi}/payment/get-transaksi-by-id`,{
-            id_project:this.props.id_project,id_user:this.props.user.id
-        },getHeaderAuth()).then((res)=>{
-            console.log(res.data)
-            
-            // console.log(this.state.detail)
-        }).catch((err)=>{
-            console.log(err)
-        })
-    }
+    
     render() {
         var {product_name,name,ect_category,status_ads} = this.state.detail
         var category = ()=>{

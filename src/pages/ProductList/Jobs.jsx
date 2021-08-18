@@ -171,7 +171,7 @@ class productList extends Component {
         }
     }
     bidNow=(id_ads)=>{
-        if(this.state.putPrice > this.state.priceLimit[1] || this.state.putPrice < this.state.priceLimit[0]){
+        if(this.state.putPrice > this.state.priceLimit[1] && this.state.putPrice < this.state.priceLimit[0]){
             return Swal.fire('Error','Your price out of Limit','error')
         }
         Axios.post(`${koneksi}/project/bid-now`,{
@@ -242,7 +242,7 @@ class productList extends Component {
                                 </MDBCardText>
                                 <MDBBtn color='blue' style={{padding:'10px',margin: '0px',}} onClick={()=> this.setState({openFile : true,priceLimit : [val.priceFrom,val.priceTo] , id_selected : val.id})}>Bid Now</MDBBtn>
                                 <Link to={'/project-detail/' + val.id} >
-                                    <MDBBtn color='yellow' style={{padding:'10px',margin: '0px',}}>See Detail</MDBBtn>
+                                    <MDBBtn color='yellow' style={{padding:'10px',marginLeft: '10px',}}>See Detail</MDBBtn>
                                 </Link>
                             </div>
                         </div>
