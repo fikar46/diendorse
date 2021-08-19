@@ -10,7 +10,7 @@ import { getHeaderAuth } from '../../helper/service';
 import { formatRupiah } from '../../helper/functions';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
-
+import {Helmet} from "react-helmet";
 const lorem = new LoremIpsum({
     sentencesPerParagraph: {
       max: 8,
@@ -321,7 +321,6 @@ verified: 1
                         {/* ===================== PRODUCT LIST SECTION ===================== */}
                         <div className='col-md-9'>
                             {this.renderData()}
-                            
                         </div>
                         {/* +++++++++++++++++++++ END OF PRODUCT LIST +++++++++++++++++++++++ */}
                     </div>

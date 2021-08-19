@@ -15,7 +15,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -26,23 +26,9 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Adsfluencer (Connect Influencer And Small Business in One Click)</title>
-    <style>
-    .digi-ads {
-    position: absolute;
-    left: 40%;
-    top: 40%;
-    z-index: 100000;
-}
-.close-right {position: absolute;top: -24px;right: -18px;font-size: 20px;}
-.digi-ads.hide {
-    display: none;
-}
-</style>
+    <title>digiads</title>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -54,34 +40,8 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <!-- PubMatic ad tag (Javascript) : DigiHackAction_Mobile_300x250 | DigiHackAction Mobile | 300 x 250 Sidekick -->
-    <div class="digi-ads" id="myDIV">
-        <div class="close-right" >
-            <i class="fa fa-close" onclick="myFunction()"></i>
-        </div>
-        <script>
-            function myFunction() {
-               var element = document.getElementById("myDIV");
-               element.classList.add("hide");
-            }
-            </script>
-            
-      <script type="text/javascript">
-        var pubId=157566;
-        var siteId=851482;
-        var kadId=3932573;
-        var kadwidth=300;
-        var kadheight=250;
-        var kadschain="mrmnthfehaujzndupfd59e3z";
-        var kadUsPrivacy="11gP2"; 
-        var kadtype=1;
-        var kadGdpr="0";
-        var kadGdprConsent="DIGIHUB"; 
-        var kadexpdir = '1,2,3,4,5';
-        var kadbattr = '8,9,10,11,14';
-        var kadifb = 'Dc';
-        var kadpageurl= "%%PATTERN:url%%";
-        </script>
-        <script type="text/javascript" src="https://ads.pubmatic.com/AdServer/js/showad.js"></script>
+    <div class="digi-ads">
+  
     </div>
   </body>
 </html>
