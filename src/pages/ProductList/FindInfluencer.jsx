@@ -163,7 +163,7 @@ verified: 1
         // if(this.state.data )
         return this.state.filteredData.map((val) => {
             return(
-                <MDBCard>
+                <MDBCard className="mb-3">
                     <MDBCardBody>
                         <div className='row justify-content-between'>
                             <div className='col-8'>
