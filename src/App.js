@@ -24,6 +24,7 @@ import PaymentPage from './pages/Transaction/Index'
 import Footer from './components/Footer'
 import CompleteProfile from './pages/Profile/CompleteProfile';
 import InfluencerDetail from './pages/ProductList/InfluencerDetail';
+import QuickAds from './pages/QuickAds/index'
 
 class App extends Component {
   state = {
@@ -46,7 +47,7 @@ class App extends Component {
 
 
   render() {
-    
+
     return (
       <div>
         <Navbar />
@@ -62,7 +63,8 @@ class App extends Component {
             <Route exact path='/find-business' component={Jobs} />
             <Route exact path='/find-influencer' component={FindInfluencer} />
             <Route exact path='/email-verification' component={EmailVerification} />
-            <Route exact path='/create-ads' component={CreateProjectAds} />
+            <Route exact path='/create-ads/regular' component={CreateProjectAds} />
+            <Route exact path='/create-ads/quick' component={QuickAds} />
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path="/ongoing-ads" component={OnGoingBusiness}/>
             <Route exact path="/user-profile/:id" component={UserProfile}/>

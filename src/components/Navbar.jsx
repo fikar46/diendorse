@@ -21,7 +21,7 @@ onLogoutCilck =()=> {
     this.props.onLogout()
     window.location = '/login'
     this.setState({isLogout : true})
-    
+
   }
 }
 roleBrowse=()=>{
@@ -43,9 +43,21 @@ roleBrowse=()=>{
 createAds=()=>{
   if(this.props.user.role == "business"){
       return(
-        <MDBNavLink to='/create-ads'>
-        <strong className="black-text">Create Ads</strong>
-                  </MDBNavLink>
+        <MDBDropdown>
+
+          <MDBDropdownToggle nav caret >
+            Create Ads
+          </MDBDropdownToggle>
+
+
+        <MDBDropdownMenu>
+          <MDBDropdownItem href="/create-ads/quick">Quick Ads</MDBDropdownItem>
+          <MDBDropdownItem href="/create-ads/regular">Regular Ads</MDBDropdownItem>
+        </MDBDropdownMenu>
+      </MDBDropdown>
+        // <MDBNavLink to='/create-ads'>
+        //   <strong className="black-text">Create Ads</strong>
+        // </MDBNavLink>
       )
   }
 }
@@ -53,7 +65,7 @@ render() {
 
   if(this.props.user !== null){
     return (
-      
+
       <MDBNavbar color="white" light expand="md" className='px-5'>
         <MDBNavbarBrand href='/dashboard' style={{cursor:'pointer'}}>
           {/* <strong className="black-text">Diendorse</strong> */}
@@ -77,19 +89,19 @@ render() {
           <MDBNavbarNav right>
             <MDBNavItem>
             <div className="pt-2">
-                  <strong className="black-text ">{this.props.user.fullname}</strong>  
+                  <strong className="black-text ">{this.props.user.fullname}</strong>
                   <p>{this.props.user.role}</p>
             </div>
             </MDBNavItem>
             <MDBNavItem>
-              
+
             <MDBDropdown>
-                
+
                   <MDBDropdownToggle nav caret >
                   <img src="https://storage.siapptn.com/image/ava/avatar.png" class="rounded-circle" width="40" height="40"/>
                   </MDBDropdownToggle>
-                
-                
+
+
                 <MDBDropdownMenu>
                   <MDBDropdownItem href="/profile">Profile</MDBDropdownItem>
                   <span onClick={this.onLogoutCilck}>
@@ -97,7 +109,7 @@ render() {
                   </span>
                 </MDBDropdownMenu>
               </MDBDropdown>
-             
+
             </MDBNavItem>
           </MDBNavbarNav>
         </MDBCollapse>
@@ -117,13 +129,13 @@ render() {
               <a className="nav-link" style={{fontSize: '16px', fontFamily: 'Avenir'}} href="/login">Login</a>
             </li>
             <li className="nav-item">
-            <MDBBtn href='/signup' color='blue' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '10px',textTransform:'capitalize' , color: "white"}}>Getting Started </MDBBtn>            
+            <MDBBtn href='/signup' color='blue' style={{borderRadius: '100px',paddingLeft: '1rem', marginLeft: '10px',textTransform:'capitalize' , color: "white"}}>Getting Started </MDBBtn>
             </li>
           </div>
           {/* <li class="nav-item menu">
                                         <a class="nav-link" href="#">Find Influencer</a>
                                       </li>
-                      
+
                         <li class="nav-item list">
                           <a class="nav-link" href="#">Find Business</a>
                         </li>
