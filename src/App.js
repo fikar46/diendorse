@@ -25,6 +25,7 @@ import Footer from './components/Footer'
 import CompleteProfile from './pages/Profile/CompleteProfile';
 import InfluencerDetail from './pages/ProductList/InfluencerDetail';
 import QuickAds from './pages/QuickAds/index'
+import QuickAdsDetail from './pages/QuickAds/detail'
 
 class App extends Component {
   state = {
@@ -65,6 +66,7 @@ class App extends Component {
             <Route exact path='/email-verification' component={EmailVerification} />
             <Route exact path='/create-ads/regular' component={CreateProjectAds} />
             <Route exact path='/create-ads/quick' component={QuickAds} />
+            <Route exact path='/quick-ads/detail' component={QuickAdsDetail} />
             <Route exact path='/dashboard' component={Dashboard} />
             <Route exact path="/ongoing-ads" component={OnGoingBusiness}/>
             <Route exact path="/user-profile/:id" component={UserProfile}/>
